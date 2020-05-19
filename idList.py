@@ -41,48 +41,38 @@ def isRoomOpen(openRooms, room):
 		return "B"
 	else:
 		return "Full"
-		
-def checkClientDirExists(clientsDB, name):
-	client = clientsDB.searchByName(clientDB, name)
-	
+
+def checkClientDirExists(ID):
 	
 	path = os.getcwd()
-	clientDir = path+"/clients/{}".format(client[1])
+	clientDir = path+"/clients/{}".format(ID)
 	
 	if os.path.exists(clientDir):
-		return True
-	else:
+		print("Client dir already Exists")
 		return False
+	else:
+		print("Created Client dir")
+		os.mkdir(clientDir)
+		return clientDir
 	
 
 def createPhotoDir(clientsDB, name):
 	client = clientDB.searchByName(clientsDB, name)
 	
-	if client is None:
-		clientInfo = input("Enter Cares ID, Room Number, and Bed: ").split()
+	if client == []:
+		clientInfo = input("Enter Cares ID, Room Number, and Bed: ").split(",")
 		signature = "signature"
 		photoDirName = clientInfo[0].strip()
 		path = os.getcwd()+"/clients/"
 		photoLocation = path+photoDirName+"/photos"
-		os.mkdir(photoLocation)
-		print("Created dir:", photoLocation)
-		clientDB.insert(clientsDB, name, clientInfo[0], clientInfo[1], clientInfo[2], signature, photoLocation)
-		return photoLocation
+		if checkClientDirExists(clientInfo[0].strip()):
+			os.mkdir(photoLocation)
+			print("Created Client photo dir:",photoLocation)
+			clientDB.insert(clientsDB, name, clientInfo[0], clientInfo[1], clientInfo[2], signature, photoLocation)
+			return photoLocation
 	else:
-		if checkClientDirExists(clientsDB,client[1]):
-			print("Directory already exists:", client[5])
+		if not checkClientDirExists(client[0]):
 			return client[5]
-			
-def createClientDir(clientsDB, name):
-	client = clientDB.searchByName(clientsDB, name)
-	
-	path = os.getcwd()+"/clients/"
-	clientDir = path+client[0]
-	if client is None:
-		if not os.path.exists(clientDir):
-			os.mkdir(clientDir)
-			print("Directory created:", clientDir)
-			return clientDir
 		
 			
 			
@@ -114,9 +104,9 @@ clientDB.create_table(db)
 
 
 
-clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", createPhotoDir(clientDB, "Marc Edwards"))
+clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", createPhotoDir(db, "Marc Edwards"))
 
 showClients(db)
 print(isRoomOpen(roomsAvailable,501))
 
-createPhotoDir(db, "Marc Edwards")
+#createPhotoDir(db, "Marc Edwards")
