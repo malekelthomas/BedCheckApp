@@ -42,8 +42,33 @@ def isRoomOpen(openRooms, room):
 	else:
 		return (False, "Full")
 
-def createPhotoLoc(clientsDB, client):
-	pass
+def createPhotoDir(clientsDB, name):
+	client = clientDB.searchByName(clientsDB, name)
+	
+	if client is None:
+		clientInfo = input("Enter Cares ID, Room Number, and Bed: ").split()
+		signature = "signature"
+		photoDirName = clientInfo+x[:].join("")
+		path = os.getcwd()+"/client_Photos/"
+		photoLocation = path+photoDirName
+		print("Created dir:", photoLocation)
+		clientDB.insert(clientsDB, name, x[0], x[1], x[2], signature, photoLocation)
+	else:
+		for info in client:
+			caresID = input("Enter Cares ID: ")
+			if caresID in info:
+				roomChange = input("Room Number: ")
+				clientDB.updateRoom(clientsDB, caresID, roomChange)
+				signature = "signature"
+				photoDirName = info[:-2]
+				path = os.getcwd()+"/client_Photos/"
+				photoLocation = path+photoDirName
+				print("Updated to dir:", photoLocation)
+				clientDB.updatePhotoLoc(caresID, photoLocation)
+
+
+
+
 
 roomsList = populateRoomNumbers(11,4,2)	
 
@@ -57,7 +82,7 @@ z=os.getcwd()+"/client_Photos/Marc_Edwards_7873637"
 #clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", z)
 
 showClients(db)
-openPhoto(getPhotoLoc(db, "Marc Edwards"))
+x = openPhoto(getPhotoLoc(db, "Marc Edwards"))
 print(os.name)
 print(platform.system())
 print(isRoomOpen(roomsAvailable,501))
