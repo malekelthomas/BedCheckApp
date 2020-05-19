@@ -1,4 +1,5 @@
 import os
+import platform
 import clientDB
 from PIL import Image
 
@@ -32,6 +33,16 @@ def getPhotoLoc(clientsdb, name):
 def openPhoto(photoLocation):
 	im = Image.open(photoLocation+".jpg")
 	im.show()
+	
+def isRoomOpen(openRooms, room):
+	if openRooms[room]["A"] == "Open":
+		return (True, "A is Open")
+	elif openRooms[room]["B"] == "Open":
+		return (True, "B is Open")
+	else:
+		return (False, "Full")
+
+	
 
 roomsList = populateRoomNumbers(11,4,2)	
 
@@ -42,8 +53,10 @@ clientDB.create_table(db)
 
 z=os.getcwd()+"/client_Photos/Marc_Edwards_7873637"
 
-clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", z)
+#clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", z)
 
 showClients(db)
-
-#openPhoto(getPhotoLoc(db, "Marc Edwards"))
+openPhoto(getPhotoLoc(db, "Marc Edwards"))
+print(os.name)
+print(platform.system())
+print(isRoomOpen(roomsAvailable,501))
