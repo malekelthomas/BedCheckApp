@@ -30,17 +30,30 @@ def getPhotoLoc(clientsdb, name):
 	for i in client:
 		return i[-1]
 
-def openPhoto(photoLocation):
+def getPhoto(photoLocation):
 	im = Image.open(photoLocation+".jpg")
-	im.show()
+	return im
 	
 def isRoomOpen(openRooms, room):
 	if openRooms[room]["A"] == "Open":
-		return (True, "A is Open")
+		return "A"
 	elif openRooms[room]["B"] == "Open":
-		return (True, "B is Open")
+		return "B"
 	else:
-		return (False, "Full")
+		return "Full"
+		
+def checkClientDirExists(clientsDB, name):
+	client = clientsDB.searchByName(clientDB, name)
+	
+	
+	path = os.getcwd()
+	clientDir = path+"/clients/{}".format(client[1])
+	
+	if os.path.exists(clientDir):
+		return True
+	else:
+		return False
+	
 
 def createPhotoDir(clientsDB, name):
 	client = clientDB.searchByName(clientsDB, name)
@@ -48,23 +61,45 @@ def createPhotoDir(clientsDB, name):
 	if client is None:
 		clientInfo = input("Enter Cares ID, Room Number, and Bed: ").split()
 		signature = "signature"
-		photoDirName = clientInfo+x[:].join("")
-		path = os.getcwd()+"/client_Photos/"
-		photoLocation = path+photoDirName
+		photoDirName = clientInfo[0].strip()
+		path = os.getcwd()+"/clients/"
+		photoLocation = path+photoDirName+"/photos"
+		os.mkdir(photoLocation)
 		print("Created dir:", photoLocation)
-		clientDB.insert(clientsDB, name, x[0], x[1], x[2], signature, photoLocation)
+		clientDB.insert(clientsDB, name, clientInfo[0], clientInfo[1], clientInfo[2], signature, photoLocation)
+		return photoLocation
 	else:
-		for info in client:
-			caresID = input("Enter Cares ID: ")
-			if caresID in info:
-				roomChange = input("Room Number: ")
-				clientDB.updateRoom(clientsDB, caresID, roomChange)
-				signature = "signature"
-				photoDirName = info[:-2]
-				path = os.getcwd()+"/client_Photos/"
-				photoLocation = path+photoDirName
-				print("Updated to dir:", photoLocation)
-				clientDB.updatePhotoLoc(caresID, photoLocation)
+		if checkClientDirExists(clientsDB,client[1]):
+			print("Directory already exists:", client[5])
+			return client[5]
+			
+def createClientDir(clientsDB, name):
+	client = clientDB.searchByName(clientsDB, name)
+	
+	path = os.getcwd()+"/clients/"
+	clientDir = path+client[0]
+	if client is None:
+		if not os.path.exists(clientDir):
+			os.mkdir(clientDir)
+			print("Directory created:", clientDir)
+			return clientDir
+		
+			
+			
+		
+		
+			
+		
+		
+def changeRoom(clientsDB, caresID, room, bed):
+
+	client = clientDB.searchByCaresID(clientsDB, caresID)
+	
+	if client != None:
+		clientDB.updateRoom(clientsDB, caresID, room, bed)
+		signature = "signature"
+		
+		
 
 
 
@@ -79,10 +114,9 @@ clientDB.create_table(db)
 
 
 
-#clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", z)
+clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", createPhotoDir(clientDB, "Marc Edwards"))
 
 showClients(db)
-x = openPhoto(getPhotoLoc(db, "Marc Edwards"))
-print(os.name)
-print(platform.system())
 print(isRoomOpen(roomsAvailable,501))
+
+createPhotoDir(db, "Marc Edwards")
