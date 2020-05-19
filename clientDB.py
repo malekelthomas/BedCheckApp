@@ -38,10 +38,10 @@ def delete(db_name, caresID):
 	conn.commit()
 	conn.close()
 
-def update(db_name, roomNum):
+def updateRoom(db_name, caresID, roomNum):
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
-	cur.execute("UPDATE clientsList SET name=?  AND caresID=? AND bed AND signature AND photo WHERE roomNum =?", roomNum)
+	cur.execute("UPDATE clientsList SET roomNum =? WHERE caresID =?", (roomNum, caresID))
 	conn.commit()
 	conn.close()
 	
