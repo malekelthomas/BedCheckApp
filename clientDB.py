@@ -44,6 +44,13 @@ def updateRoom(db_name, caresID, roomNum):
 	cur.execute("UPDATE clientsList SET roomNum =? WHERE caresID =?", (roomNum, caresID))
 	conn.commit()
 	conn.close()
+
+def updatePhotoLoc(db_name, caresID, photoLoc):
+	conn = sqlite3.connect(db_name)
+	cur = conn.cursor()
+	cur.execute("UPDATE clientsList SET photoLoc=? WHERE caresID =?", (photoLoc, caresID))
+	conn.commit()
+	conn.close()
 	
 def searchByName(db_name, name):
 	
