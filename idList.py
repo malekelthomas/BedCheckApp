@@ -23,8 +23,12 @@ def showClients(clients):
 		print(i)
 		print("\n")
 	
+def getPhoto(clientsdb, name):
+	client = clientDB.searchByName(clientsdb, name)
+	for i in client:
+		return i[-1]
 
-	
+
 
 roomsList = populateRoomNumbers(11,4,2)	
 
@@ -36,4 +40,6 @@ clientDB.create_table(db)
 #clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", "/")
 
 showClients(db)
+
+print(getPhoto(db, "Marc Edwards"))
 

@@ -34,14 +34,14 @@ def view(db_name):
 def delete(db_name, caresID):
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
-	cur.execute("DELETE FROM clientsList WHERE caresID=?", caresID)
+	cur.execute("DELETE FROM clientsList WHERE caresID=?", (caresID))
 	conn.commit()
 	conn.close()
 
 def update(db_name, roomNum):
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
-	cur.execute("UPDATE clientList SET name=?  AND caresID=? AND bed AND signature AND photo WHERE roomNum =?", roomNum)
+	cur.execute("UPDATE clientsList SET name=?  AND caresID=? AND bed AND signature AND photo WHERE roomNum =?", roomNum)
 	conn.commit()
 	conn.close()
 	
@@ -49,7 +49,7 @@ def searchByName(db_name, name):
 	
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
-	cur.execute("SELECT * FROM clientList WHERE name =?", name)
+	cur.execute("SELECT * FROM clientsList WHERE name =?", (name,)) #for one var, place in tuple with comma afterwards or it will treat var as input sequence
 	rows = cur.fetchall()
 	conn.close()
 	return rows
@@ -59,9 +59,17 @@ def searchByCaresID(db_name, caresID):
 	
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
-	cur.execute("SELECT * FROM clientList WHERE caresID =?", caresID)
+	cur.execute("SELECT * FROM clientsList WHERE caresID =?",(caresID,))
 	rows = cur.fetchall()
 	conn.close()
 	return rows
 	
+def searchByPhoto(db_name, photoloc):
+	
+	conn = sqlite3.connect(db_name)
+	cur = conn.cursor()
+	cur.execute("SELECT * FROM clientsList WHERE photoloc =?",(photoloc,))
+	rows = cur.fetchall()
+	conn.close()
+	return rows
 
