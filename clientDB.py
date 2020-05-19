@@ -45,11 +45,21 @@ def update(db_name, roomNum):
 	conn.commit()
 	conn.close()
 	
-def searchbyName(db_name, name):
+def searchByName(db_name, name):
 	
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
-	cur.execute("SELECT * FROM catalog WHERE name =?", name)
+	cur.execute("SELECT * FROM clientList WHERE name =?", name)
+	rows = cur.fetchall()
+	conn.close()
+	return rows
+
+	
+def searchByCaresID(db_name, caresID):
+	
+	conn = sqlite3.connect(db_name)
+	cur = conn.cursor()
+	cur.execute("SELECT * FROM clientList WHERE caresID =?", caresID)
 	rows = cur.fetchall()
 	conn.close()
 	return rows
