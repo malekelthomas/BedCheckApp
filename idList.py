@@ -42,7 +42,8 @@ def isRoomOpen(openRooms, room):
 	else:
 		return (False, "Full")
 
-	
+def createPhotoLoc(clientsDB, client):
+	pass
 
 roomsList = populateRoomNumbers(11,4,2)	
 
