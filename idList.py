@@ -77,7 +77,7 @@ roomsAvailable = populateRoomsOpen(roomsList)
 db = "clientList.db"
 clientDB.create_table(db)
 
-z=os.getcwd()+"/client_Photos/Marc_Edwards_7873637"
+
 
 #clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", z)
 
