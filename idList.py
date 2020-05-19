@@ -56,31 +56,35 @@ def checkClientDirExists(ID):
 		return clientDir
 	
 
-def createPhotoDir(clientsDB, name):
+def createSignatureOrPhotoDir(clientsDB, name, *args):
 	client = clientDB.searchByName(clientsDB, name)
 	
 	if client == []:
 		clientInfo = input("Enter Cares ID, Room Number, and Bed: ").split(",")
 		signature = "signature"
-		photoDirName = clientInfo[0].strip()
+		DirName = clientInfo[0].strip()
 		path = os.getcwd()+"/clients/"
-		photoLocation = path+photoDirName+"/photos"
-		if checkClientDirExists(clientInfo[0].strip()):
-			os.mkdir(photoLocation)
-			print("Created Client photo dir:",photoLocation)
-			clientDB.insert(clientsDB, name, clientInfo[0], clientInfo[1], clientInfo[2], signature, photoLocation)
-			return photoLocation
-	else:
-		if not checkClientDirExists(client[0]):
-			return client[5]
-		
+		photoLocation = path+DirName+"/photos"
+		signatureLocation = path+DirName+"/signatures"
+		if "photo" in args:
+			if checkClientDirExists(clientInfo[0].strip()):
+				os.mkdir(photoLocation)
+				print("Created Client photo dir:",photoLocation)
+				clientDB.updatePhotoLoc(clientsDB, DirName, photoLocation)
+				return photoLocation
+			else:
+				if not checkClientDirExists(client[0].strip()):
+					return client[5]
+		elif "signature" in args:
+			if checkClientDirExists(clientInfo[0].strip()):
+				os.mkdir(signatureLocation)
+				print("Created Client signature dir:", signatureLocation)
+				clientDB.updateSignatureLoc(clientsDB, DirName, signatureLocation)
+				return signatureLocation
+			else:
+				if not checkClientDirExists(clientInfo[0].strip()):
+					return client[4]
 			
-			
-		
-		
-			
-		
-		
 def changeRoom(clientsDB, caresID, room, bed):
 
 	client = clientDB.searchByCaresID(clientsDB, caresID)

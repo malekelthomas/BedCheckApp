@@ -20,9 +20,6 @@ def insert(db_name, name, caresID, roomNum, bed, signature, photoLocation):
 	conn.commit()
 	conn.close()
 
-
-
-
 def view(db_name):
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
