@@ -1,5 +1,6 @@
 import os
 import clientDB
+from PIL import Image
 
 def populateRoomNumbers(numRoomsPerFloor, numFloors, floorStart):
 	
@@ -23,12 +24,14 @@ def showClients(clients):
 		print(i)
 		print("\n")
 	
-def getPhoto(clientsdb, name):
+def getPhotoLoc(clientsdb, name):
 	client = clientDB.searchByName(clientsdb, name)
 	for i in client:
 		return i[-1]
 
-
+def openPhoto(photoLocation):
+	im = Image.open(photoLocation+".jpg")
+	im.show()
 
 roomsList = populateRoomNumbers(11,4,2)	
 
@@ -37,9 +40,10 @@ roomsAvailable = populateRoomsOpen(roomsList)
 db = "clientList.db"
 clientDB.create_table(db)
 
-#clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", "/")
+z=os.getcwd()+"/client_Photos/Marc_Edwards_7873637"
+
+clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", z)
 
 showClients(db)
 
-print(getPhoto(db, "Marc Edwards"))
-
+#openPhoto(getPhotoLoc(db, "Marc Edwards"))
