@@ -51,6 +51,14 @@ def updatePhotoLoc(db_name, caresID, photoLoc):
 	cur.execute("UPDATE clientsList SET photoLocation=? WHERE caresID =?", (photoLoc, caresID))
 	conn.commit()
 	conn.close()
+
+def updateSignatureLoc(db_name, caresID, signatureLoc):
+	conn = sqlite3.connect(db_name)
+	cur = conn.cursor()
+	cur.execute("UPDATE clientsList SET signature =? WHERE caresID=?", (signatureLoc, caresID))
+	conn.commit()
+	conn.close()
+	
 	
 def searchByName(db_name, name):
 	
