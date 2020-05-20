@@ -66,24 +66,17 @@ def createSignatureOrPhotoDir(clientsDB, name, *args):
 		path = os.getcwd()+"/clients/"
 		photoLocation = path+DirName+"/photos"
 		signatureLocation = path+DirName+"/signatures"
-		if "photo" in args:
-			if checkClientDirExists(clientInfo[0].strip()):
+		if checkClientDirExists(clientInfo[0].strip()):
+			if "photo" in args:
 				os.mkdir(photoLocation)
 				print("Created Client photo dir:",photoLocation)
 				clientDB.updatePhotoLoc(clientsDB, DirName, photoLocation)
 				return photoLocation
-			else:
-				if not checkClientDirExists(client[0].strip()):
-					return client[5]
 		elif "signature" in args:
-			if checkClientDirExists(clientInfo[0].strip()):
-				os.mkdir(signatureLocation)
-				print("Created Client signature dir:", signatureLocation)
-				clientDB.updateSignatureLoc(clientsDB, DirName, signatureLocation)
-				return signatureLocation
-			else:
-				if not checkClientDirExists(clientInfo[0].strip()):
-					return client[4]
+			os.mkdir(signatureLocation)
+			print("Created Client signature dir:", signatureLocation)
+			clientDB.updateSignatureLoc(clientsDB, DirName, signatureLocation)
+			return signatureLocation
 			
 def changeRoom(clientsDB, caresID, room, bed):
 
@@ -108,9 +101,7 @@ clientDB.create_table(db)
 
 
 
-clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", "jfndkd", createPhotoDir(db, "Marc Edwards"))
+clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", createSignatureOrPhotoDir(db, "Marc Edwards", "signature"), createSignatureOrPhotoDir(db, "Marc Edwards", "photo"))
 
 showClients(db)
-print(isRoomOpen(roomsAvailable,501))
-
-#createPhotoDir(db, "Marc Edwards")
+#print(isRoomOpen(roomsAvailable,501))
