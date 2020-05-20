@@ -1,7 +1,7 @@
 import os
-import platform
 import clientDB
 from PIL import Image
+from createJson import createJson as cj
 
 def populateRoomNumbers(numRoomsPerFloor, numFloors, floorStart):
 	
@@ -153,10 +153,6 @@ def addClient(clientsDB, name, caresID, roomNum, bed, openRooms):
 
 
 
-
-
-
-
 roomsList = populateRoomNumbers(11,4,2)	
 
 roomsAvailable = populateRoomsOpen(roomsList)
@@ -171,7 +167,6 @@ addClient(db, "Mike Johnson", ID2, 501,"A", roomsAvailable)
 
 showClients(db)
 
-removeClient(db, ID)
 
-showClients(db)
+cj(roomsAvailable, "rooms.txt")
 #print(isRoomOpen(roomsAvailable,501))
