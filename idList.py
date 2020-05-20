@@ -34,63 +34,91 @@ def getPhoto(photoLocation):
 	im = Image.open(photoLocation+".jpg")
 	return im
 	
+def isBedOpen(room, bed, openRooms):
+	isBedOcc = isRoomOpen(openRooms, room)
+
+	if isBedOcc == bed or isBedOcc == bed.lower() or isBedOcc == "Empty":
+		return True
+	else:
+		print("Bed occupied")
+		return False
+
+
 def isRoomOpen(openRooms, room):
-	if openRooms[room]["A"] == "Open":
+	if openRooms[room]["A"] == "Open" and openRooms[room]["B"] == "Open":
+		return "Empty"
+	elif openRooms[room]["A"] == "Open" and openRooms[room]["B"] != "Open":
 		return "A"
-	elif openRooms[room]["B"] == "Open":
+	elif openRooms[room]["B"] == "Open" and openRooms[room]["A"] != "Open":
 		return "B"
 	else:
 		return "Full"
 
-def checkClientDirExists(ID):
+
+def checkClientDirExists(caresID):
 	
 	path = os.getcwd()
-	clientDir = path+"/clients/{}".format(ID)
+	clientDir = path+"/clients/{}".format(caresID)
 	
 	if os.path.exists(clientDir):
-		print("Client dir already Exists")
+		#print("Client dir already Exists")
 		return clientDir
 	else:
-		print("Created Client dir")
+		#print("Created Client dir")
 		os.mkdir(clientDir)
 		return clientDir
 
-def checkPhotoDirExists(ID):
+def checkPhotoDirExists(caresID):
 	path = os.getcwd()
-	photoDir = path+"/clients/{}/photos".format(ID)
+	photoDir = path+"/clients/{}/photos".format(caresID)
 	
 	if os.path.exists(photoDir):
-		print("Photo dir already exists")
-		return photoDir
+		#print("Photo dir already exists")
+		return (True, photoDir)
 	else:
-		print("Created photo dir for {}".format(ID))
-		os.mkdir(photoDir)
-		return photoDir
-
-def createSignatureOrPhotoDir(clientsDB, caresID, *args):
-	client = clientDB.searchByCaresID(clientsDB, ID)
+		#print("Created photo dir for {}".format(ID))
+		return (False, photoDir)
+def checkSignatureDirExists(caresID):
+	path = os.getcwd()
+	sigDir = path+"/clients/{}/signatures".format(caresID)
 	
+	if os.path.exists(sigDir):
+		#print("Photo dir already exists")
+		return (True, sigDir)
+	else:
+		#print("Created photo dir for {}".format(ID))
+		return (False, sigDir)
+def createSignatureOrPhotoDir(clientsDB, caresID, *args):
+	client = clientDB.searchByCaresID(clientsDB, caresID)
 	if client == []:
-		path = os.getcwd()+"/clients/"
-		photoLocation = path+str(caresID)+"/photos"
-		signatureLocation = path+str(caresID)+"/signatures"
-		if checkClientDirExists(ID):
+		#path = os.getcwd()+"/clients/"
+		#photoLocation = path+str(caresID)+"/photos"
+		#signatureLocation = path+str(caresID)+"/signatures"
+		if checkClientDirExists(caresID):
 			if "photo" in args:
-				os.mkdir(photoLocation)
-				print("Created Client photo dir:",photoLocation)
-				clientDB.updatePhotoLoc(clientsDB, ID, photoLocation)
-				return photoLocation
+				if not checkPhotoDirExists(caresID)[0]:
+					photoLocation = checkPhotoDirExists(caresID)[1]
+					os.mkdir(photoLocation)
+					#print("Created Client photo dir:",photoLocation)
+					clientDB.updatePhotoLoc(clientsDB, caresID, photoLocation)
+					return photoLocation
+				else:
+					return checkPhotoDirExists(caresID)[1]
 			elif "signature" in args:
-				os.mkdir(signatureLocation)
-				print("Created Client signature dir:", signatureLocation)
-				clientDB.updateSignatureLoc(clientsDB, ID, signatureLocation)
-				return signatureLocation
+				if not checkPhotoDirExists(caresID)[0]:
+					signatureLocation = checkSignatureDirExists(caresID)[1]
+					os.mkdir(signatureLocation)
+					#print("Created Client photo dir:",photoLocation)
+					clientDB.updateSignatureLoc(clientsDB, caresID, signatureLocation)
+					return signatureLocation
+				else:
+					return checkSignatureDirExists(caresID)[1]
 	else:
 		if "photo" in args:
-			print(client[0][5])
+			#print(client[0][5])
 			return client[0][5]
 		elif "signature" in args:
-			print(client[0][4])
+			#print(client[0][4])
 			return client[0][4]
 			
 			
@@ -102,8 +130,28 @@ def changeRoom(clientsDB, caresID, room, bed):
 		clientDB.updateRoom(clientsDB, caresID, room, bed)
 		signature = "signature"
 		
-		
-		
+def removeClient(clientsDB, caresID):
+	print("Client removed")
+	return clientDB.delete(clientsDB, caresID)
+
+def addClient(clientsDB, name, caresID, roomNum, bed, openRooms):
+	if clientDB.searchByCaresID(clientsDB, caresID) == []:
+		print(1, name, clientDB.searchByCaresID(clientsDB, caresID))
+		if isRoomOpen(openRooms, roomNum) != "Full":
+			if isBedOpen(roomNum, bed, openRooms):
+				return clientDB.insert(clientsDB, name, caresID, roomNum, bed, createSignatureOrPhotoDir(clientsDB, caresID, "signature"), createSignatureOrPhotoDir(clientsDB, caresID,"photo"))
+			else:
+				return False
+		else:
+			print("Room is full, pick a room with an empty bed")
+			return False
+	else:
+		print(2, name, clientDB.searchByCaresID(clientsDB, caresID))
+
+		print("Client already added")
+		return False
+
+
 
 
 
@@ -116,9 +164,14 @@ roomsAvailable = populateRoomsOpen(roomsList)
 db = "clientList.db"
 clientDB.create_table(db)
 
-
 ID = 12345
-clientDB.insert(db, "Marc Edwards", ID, 501,"B", createSignatureOrPhotoDir(db, ID, "signature"), createSignatureOrPhotoDir(db, ID, "photo"))
+ID2 = 54321
+addClient(db, "Marc Edwards", ID, 501,"B", roomsAvailable)
+addClient(db, "Mike Johnson", ID2, 501,"A", roomsAvailable)
+
+showClients(db)
+
+removeClient(db, ID)
 
 showClients(db)
 #print(isRoomOpen(roomsAvailable,501))

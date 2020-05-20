@@ -31,7 +31,7 @@ def view(db_name):
 def delete(db_name, caresID):
 	conn = sqlite3.connect(db_name)
 	cur = conn.cursor()
-	cur.execute("DELETE FROM clientsList WHERE caresID=?", (caresID))
+	cur.execute("DELETE FROM clientsList WHERE caresID=?", (caresID,))
 	conn.commit()
 	conn.close()
 
