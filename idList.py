@@ -49,34 +49,50 @@ def checkClientDirExists(ID):
 	
 	if os.path.exists(clientDir):
 		print("Client dir already Exists")
-		return False
+		return clientDir
 	else:
 		print("Created Client dir")
 		os.mkdir(clientDir)
 		return clientDir
-	
 
-def createSignatureOrPhotoDir(clientsDB, name, *args):
-	client = clientDB.searchByName(clientsDB, name)
+def checkPhotoDirExists(ID):
+	path = os.getcwd()
+	photoDir = path+"/clients/{}/photos".format(ID)
+	
+	if os.path.exists(photoDir):
+		print("Photo dir already exists")
+		return photoDir
+	else:
+		print("Created photo dir for {}".format(ID))
+		os.mkdir(photoDir)
+		return photoDir
+
+def createSignatureOrPhotoDir(clientsDB, caresID, *args):
+	client = clientDB.searchByCaresID(clientsDB, ID)
 	
 	if client == []:
-		clientInfo = input("Enter Cares ID, Room Number, and Bed: ").split(",")
-		signature = "signature"
-		DirName = clientInfo[0].strip()
 		path = os.getcwd()+"/clients/"
-		photoLocation = path+DirName+"/photos"
-		signatureLocation = path+DirName+"/signatures"
-		if checkClientDirExists(clientInfo[0].strip()):
+		photoLocation = path+str(caresID)+"/photos"
+		signatureLocation = path+str(caresID)+"/signatures"
+		if checkClientDirExists(ID):
 			if "photo" in args:
 				os.mkdir(photoLocation)
 				print("Created Client photo dir:",photoLocation)
-				clientDB.updatePhotoLoc(clientsDB, DirName, photoLocation)
+				clientDB.updatePhotoLoc(clientsDB, ID, photoLocation)
 				return photoLocation
+			elif "signature" in args:
+				os.mkdir(signatureLocation)
+				print("Created Client signature dir:", signatureLocation)
+				clientDB.updateSignatureLoc(clientsDB, ID, signatureLocation)
+				return signatureLocation
+	else:
+		if "photo" in args:
+			print(client[0][5])
+			return client[0][5]
 		elif "signature" in args:
-			os.mkdir(signatureLocation)
-			print("Created Client signature dir:", signatureLocation)
-			clientDB.updateSignatureLoc(clientsDB, DirName, signatureLocation)
-			return signatureLocation
+			print(client[0][4])
+			return client[0][4]
+			
 			
 def changeRoom(clientsDB, caresID, room, bed):
 
@@ -85,6 +101,7 @@ def changeRoom(clientsDB, caresID, room, bed):
 	if client != None:
 		clientDB.updateRoom(clientsDB, caresID, room, bed)
 		signature = "signature"
+		
 		
 		
 
@@ -100,8 +117,8 @@ db = "clientList.db"
 clientDB.create_table(db)
 
 
-
-clientDB.insert(db, "Marc Edwards", 7873637, 501,"B", createSignatureOrPhotoDir(db, "Marc Edwards", "signature"), createSignatureOrPhotoDir(db, "Marc Edwards", "photo"))
+ID = 12345
+clientDB.insert(db, "Marc Edwards", ID, 501,"B", createSignatureOrPhotoDir(db, ID, "signature"), createSignatureOrPhotoDir(db, ID, "photo"))
 
 showClients(db)
 #print(isRoomOpen(roomsAvailable,501))
