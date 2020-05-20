@@ -54,6 +54,12 @@ def isRoomOpen(openRooms, room):
 	else:
 		return "Full"
 
+def occupyBed(openRooms, room, bed):
+	if isBedOpen(room, bed, openRooms):
+		openRooms[room][bed.upper()] = "Occupied"
+		return True
+	else:
+		return False
 
 def checkClientDirExists(caresID):
 	
@@ -88,6 +94,7 @@ def checkSignatureDirExists(caresID):
 	else:
 		#print("Created photo dir for {}".format(ID))
 		return (False, sigDir)
+
 def createSignatureOrPhotoDir(clientsDB, caresID, *args):
 	client = clientDB.searchByCaresID(clientsDB, caresID)
 	if client == []:
@@ -136,9 +143,9 @@ def removeClient(clientsDB, caresID):
 
 def addClient(clientsDB, name, caresID, roomNum, bed, openRooms):
 	if clientDB.searchByCaresID(clientsDB, caresID) == []:
-		print(1, name, clientDB.searchByCaresID(clientsDB, caresID))
 		if isRoomOpen(openRooms, roomNum) != "Full":
 			if isBedOpen(roomNum, bed, openRooms):
+				occupyBed(openRooms, roomNum, bed)
 				return clientDB.insert(clientsDB, name, caresID, roomNum, bed, createSignatureOrPhotoDir(clientsDB, caresID, "signature"), createSignatureOrPhotoDir(clientsDB, caresID,"photo"))
 			else:
 				return False
@@ -146,8 +153,6 @@ def addClient(clientsDB, name, caresID, roomNum, bed, openRooms):
 			print("Room is full, pick a room with an empty bed")
 			return False
 	else:
-		print(2, name, clientDB.searchByCaresID(clientsDB, caresID))
-
 		print("Client already added")
 		return False
 
@@ -171,7 +176,11 @@ addClient(db, "Mike Johnson", ID2, 501,"A", roomsAvailable)
 
 showClients(db)
 
-removeClient(db, ID)
+# removeClient(db, ID)
 
-showClients(db)
+# removeClient(db, ID2)
+
+# showClients(db)
+
+print(roomsAvailable)
 #print(isRoomOpen(roomsAvailable,501))
