@@ -1,3 +1,3 @@
 # BedCheckApp
 
-Condenses client data into an app that allow clients and staff to see sign in and pass information
+App that allows staff to login and access list of clients and allows clients to sign for their bed. List contains photo, name, id, pass.
