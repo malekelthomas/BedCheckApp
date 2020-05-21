@@ -98,7 +98,7 @@ def checkSignatureDirExists(caresID):
 
 def createSignatureOrPhotoDir(clientsDB, caresID, *args):
 	client = clientDB.searchByCaresID(clientsDB, caresID)
-	if client == []:
+	if client == []: #if client doesn't exist 
 		#path = os.getcwd()+"/clients/"
 		#photoLocation = path+str(caresID)+"/photos"
 		#signatureLocation = path+str(caresID)+"/signatures"
