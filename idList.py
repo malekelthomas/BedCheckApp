@@ -7,7 +7,7 @@ def populateRoomNumbers(numRoomsPerFloor, numFloors, floorStart):
 	
 	start = floorStart*100+1
 	end = 100*(floorStart+(numFloors-floorStart)+1)+11
-	rooms = [i for i in range(start,end+1) if i % 100 <= numRoomsPerFloor]
+	rooms = [i for i in range(start,end) if  i % 100 <= numRoomsPerFloor and i %100 != 0]
 	
 	return rooms
 	
@@ -84,6 +84,7 @@ def checkPhotoDirExists(caresID):
 	else:
 		#print("Created photo dir for {}".format(ID))
 		return (False, photoDir)
+
 def checkSignatureDirExists(caresID):
 	path = os.getcwd()
 	sigDir = path+"/clients/{}/signatures".format(caresID)
@@ -154,6 +155,8 @@ def addClient(clientsDB, name, caresID, roomNum, bed, openRooms):
 			return False
 	else:
 		print("Client already added")
+		if isBedOpen(roomNum, bed, openRooms):
+			occupyBed(openRooms,roomNum,bed)
 		return False
 
 
@@ -172,16 +175,13 @@ addClient(db, "Mike Johnson", ID2, 501,"A", roomsAvailable)
 
 showClients(db)
 
-<<<<<<< HEAD
-
+print(roomsList)
 cj(roomsAvailable, "rooms.txt")
-=======
 # removeClient(db, ID)
 
 # removeClient(db, ID2)
 
 # showClients(db)
 
-print(roomsAvailable)
->>>>>>> e21dfa953ddb12ab543aeca85a4c95fab8362819
+#print(roomsAvailable)
 #print(isRoomOpen(roomsAvailable,501))
