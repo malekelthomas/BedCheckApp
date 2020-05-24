@@ -1,10 +1,20 @@
 {% extends "base.html" %}
 
+{% block css %}
+	#clientList{
+		list-style:none;
+	}
+
+{% endblock css%}
+
+
 {% block pageTitle %}Roster{% endblock pageTitle %}
 {% block content %}
 
-<div id= "clientList">
-    Replace me
+<div>
+	<ul id= "clientList"> /*unordered list*/
+		Replace me
+    </ul>
 </div>
 
 
@@ -26,7 +36,7 @@
         for(i=0;i<clients.length;i++){
             console.log(i)
             console.log(clients[i])
-            var client = "<h1>"+clients[i].lastname+","+clients[i].firstname+"</h1>" /*to access Model attr remove '_'*/
+            var client = "<li>"+clients[i].lastname+", "+clients[i].firstname+"</li>" /*to access Model attr remove '_'*/
             clientsList+=client;
         }
         clientsElement.innerHTML = clientsList
