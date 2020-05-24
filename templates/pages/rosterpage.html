@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<script>
+    const xhr = new XMLHttpRequest()
+    const method = 'GET' //http get method
+    const url = "/roster"
+    const responseType = "json"
+
+
+
+    xhr.responseType = responseType
+    xhr.open(method, url) /* open request with specified method at url */
+    xhr.onload = function(){ /*upon loading execute this function */
+        console.log(xhr.response) /*logs request */
+    }
+    xhr.send() /*triggers request */
+</script>
+{% endblock content %}
