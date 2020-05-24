@@ -1,21 +1,38 @@
 {% extends "base.html" %}
 
+{% block pageTitle %}Roster{% endblock pageTitle %}
 {% block content %}
+
+<div id= "clientList">
+    Replace me
+</div>
 
 
 <script>
+    const clientsElement = document.getElementById("clientList")
     const xhr = new XMLHttpRequest()
     const method = 'GET' //http get method
-    const url = "/roster"
+    const url = "/rosterlist/" /*trailing slash important!!*/
     const responseType = "json"
-
 
 
     xhr.responseType = responseType
     xhr.open(method, url) /* open request with specified method at url */
     xhr.onload = function(){ /*upon loading execute this function */
-        console.log(xhr.response) /*logs request */
+        const serverResponse = xhr.response
+        const clients = serverResponse.response
+        var clientsList = "";
+        var i;
+        for(i=0;i<clients.length;i++){
+            console.log(i)
+            console.log(clients[i])
+            var client = "<h1>"+clients[i].lastname+","+clients[i].firstname+"</h1>" /*to access Model attr remove '_'*/
+            clientsList+=client;
+        }
+        clientsElement.innerHTML = clientsList
+        console.log(clients)
     }
     xhr.send() /*triggers request */
+
 </script>
 {% endblock content %}

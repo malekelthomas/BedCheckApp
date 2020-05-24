@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from bedcheck.views import roster_list_view
 from bedcheck.views import roster_view
 from bedcheck.views import login_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("login/", login_view),
     path("roster/", roster_view),
+    path("rosterlist/", roster_list_view)
 ]
