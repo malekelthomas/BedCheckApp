@@ -11,15 +11,28 @@
 {% block pageTitle %}Roster{% endblock pageTitle %}
 {% block content %}
 
-<div>
-	<ul id= "clientList"> /*unordered list*/
-		Replace me
-    </ul>
+<div class = "table-responsive">
+	<table class="table" id="clientList">
+		<thead>
+			<tr>
+				<th>Room</th>
+				<th>Bed</th>
+				<th>Photo</th>
+				<th>Last Name</th>
+				<th>First Name</th>
+				<th>Cares ID</th>
+				<th>LP/ON</th>
+				<th>Sign</th>
+			</tr>
+		</thead>
+		<tbody id="client">
+		</tbody>
+    </table>
 </div>
 
 
 <script>
-    const clientsElement = document.getElementById("clientList")
+    const clientElement = document.getElementById("client")
     const xhr = new XMLHttpRequest()
     const method = 'GET' //http get method
     const url = "/rosterlist/" /*trailing slash important!!*/
@@ -36,10 +49,10 @@
         for(i=0;i<clients.length;i++){
             console.log(i)
             console.log(clients[i])
-            var client = "<li>"+clients[i].lastname+", "+clients[i].firstname+"</li>" /*to access Model attr remove '_'*/
+            var client = "<tr><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td></td></td><td>" /*to access Model attr remove '_'*/
             clientsList+=client;
         }
-        clientsElement.innerHTML = clientsList
+        clientElement.innerHTML = clientsList
         console.log(clients)
     }
     xhr.send() /*triggers request */
