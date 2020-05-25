@@ -8,5 +8,6 @@ class Client(models.Model):
     cares_id = models.IntegerField(blank=True, null=True)
     room_num = models.IntegerField(blank=True, null=True)
     bed = models.CharField(blank=True, null=True, max_length =1)
+    lp_on = models.TextField(blank=True, null=True)
     signature = models.FileField(upload_to='images/', blank=True, null=True)
     image = models.FileField(upload_to='images/', blank=True, null=True)
