@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from bedcheck.views import roster_list_view
 from bedcheck.views import roster_view
@@ -24,4 +26,4 @@ urlpatterns = [
     path("login/", login_view),
     path("roster/", roster_view),
     path("rosterlist/", roster_list_view)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
