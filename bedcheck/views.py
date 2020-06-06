@@ -15,8 +15,7 @@ def roster_list_view(request, *args, **kwargs):
     returns json data
     """
     qs = Client.objects.all()
-    client_list = [{"id": x.id, "firstname": x.first_name, "lastname": x.last_name, "caresID": x.cares_id, 
-    "roomNumber": x.room_num, "bed": x.bed, "lpOn": x.lp_on, "image": url} for x in qs] #does not have signature and image, FileField not JSON serializable
+    client_list = [{"id": x.id, "firstname": x.first_name, "lastname": x.last_name, "caresID": x.cares_id, "roomNumber": x.room_num, "bed": x.bed, "lpOn": x.lp_on, "image": x.getImgUrl()} for x in qs] #does not have signature and image, FileField not JSON serializable
     data = {
         "response": client_list
     }

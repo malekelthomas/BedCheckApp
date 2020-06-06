@@ -11,3 +11,10 @@ class Client(models.Model):
     lp_on = models.TextField(blank=True, null=True)
     signature = models.FileField(upload_to='signatures/', blank=True, default="")
     image = models.ImageField(upload_to='images/', blank=True, default="")
+
+    def getImgUrl(self):
+        if self.image != None:
+            img_url = self.image.url
+            return img_url
+        else:
+            return ""

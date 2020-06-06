@@ -2,8 +2,18 @@
 
 {% block css %}
 	#clientList{
-		list-style:none;
-	}
+        list-style:none;
+        width:100%;
+        height:650px;
+        border-bottom:none;
+    
+    }
+    
+    img {
+        width: 100%;
+        height: 100%;
+        display:block;
+    }
 
 {% endblock css%}
 
@@ -52,7 +62,7 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var client = "<tr><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><img src='{{imageurl}}' alt='Man'/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td>"+clients[i].signature+"</td></tr>" /*to access Model attr remove '_'*/
+            var client = "<tr><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><img src="+"'"+clients[i].image+"' alt='Man'/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td>"+clients[i].signature+"</td></tr>" /*to access Model attr remove '_'*/
             clientsList+=client;
         }
         clientElement.innerHTML = clientsList /* replace table body */
