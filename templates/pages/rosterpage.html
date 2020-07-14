@@ -47,6 +47,15 @@
 
 
 <script>
+   /*make table rows clickable*/
+    jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("url");
+    });
+});
+</script>
+
+<script>
     const clientElement = document.getElementById("client") /*table body*/
     const xhr = new XMLHttpRequest()
     const method = 'GET' //http get method
@@ -66,7 +75,7 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var client = "<tr class='clickable-row' data-href='url://'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/login/'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td>"+clients[i].signature+"</td></tr>" /*to access Model attr remove '_'*/
+            var client = "<tr class='clickable-row' data-url='url://login/'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/login/'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td>"+clients[i].signature+"</td></tr>" /*to access Model attr remove '_'*/
             clientsList+=client;
         }
         clientElement.innerHTML = clientsList /* replace table body */
@@ -74,14 +83,6 @@
     }
     xhr.send() /*triggers request */
 
-
-
-    /*make table rows clickable*/
-    jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-    });
-});
-
 </script>
 {% endblock content %}
+}

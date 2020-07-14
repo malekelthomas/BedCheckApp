@@ -23,3 +23,8 @@ def roster_list_view(request, *args, **kwargs):
 
 def login_view(request, *args, **kwargs):
     return render(request, "pages/login.html", context ={}, status=200)
+    
+def single_client_data_view(request, caresID, *args, **kwargs):
+	print(args, kwargs)
+	obj = Client.objects.get(cares_id=caresID)
+	return HttpResponse(f"Hello {obj.last_name}, {obj.first_name}")
