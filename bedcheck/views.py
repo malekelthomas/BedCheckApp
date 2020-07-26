@@ -15,7 +15,7 @@ def roster_list_view(request, *args, **kwargs):
     returns json data
     """
     qs = Client.objects.all()
-    client_list = [{"id": x.id, "firstname": x.first_name, "lastname": x.last_name, "caresID": x.cares_id, "roomNumber": x.room_num, "bed": x.bed, "lpOn": x.lp_on, "image": x.getImgUrl()} for x in qs] #does not have signature and image, FileField not JSON serializable
+    client_list = [{"id": x.id, "firstname": x.first_name, "lastname": x.last_name, "caresID": x.cares_id, "roomNumber": x.room_num, "bed": x.bed, "lpOn": x.lp_on, "image": x.getImgUrl()} for x in qs] #does not have signature
     data = {
         "response": client_list
     }
@@ -23,8 +23,11 @@ def roster_list_view(request, *args, **kwargs):
 
 def login_view(request, *args, **kwargs):
     return render(request, "pages/login.html", context ={}, status=200)
-    
+
+
 def single_client_data_view(request, caresID, *args, **kwargs):
-	print(args, kwargs)
-	obj = Client.objects.get(cares_id=caresID)
-	return HttpResponse(f"Hello {obj.last_name}, {obj.first_name}")
+    obj = Client.objects.get(cares_id=caresID)
+    data = {
+        "response": [obj.id, obj.first_name, obj.last_name, obj.cares_id, obj.room_num, obj.bed, obj.lp_on, obj.getImgUrl()]
+    }
+    return JsonResponse(data)

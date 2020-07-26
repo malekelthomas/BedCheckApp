@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block pageTitle %}Client{% endblock pageTitle %}
+{% block content %}
+
+<script>
+    const xhr = new XMLHttpRequest()
+    const method = 'GET'
+    const url = "/single_client_data/"+{%block client %}{%endblock client%}
+    const responseType = "json"
+
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function(){
+        const serverResponse = xhr.response
+    }
+
+
+
+</script>
+
+{% endblock content %}
