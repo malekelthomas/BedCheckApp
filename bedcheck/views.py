@@ -25,9 +25,16 @@ def login_view(request, *args, **kwargs):
     return render(request, "pages/login.html", context ={}, status=200)
 
 
-def single_client_data_view(request, caresID, *args, **kwargs):
-    obj = Client.objects.get(cares_id=caresID)
+def single_client_data_view(request, *args, **kwargs):
+    this_client_cares_id = request.session.get('this_client_cares_id')
+    obj = Client.objects.get(cares_id=this_client_cares_id)
     data = {
         "response": [obj.id, obj.first_name, obj.last_name, obj.cares_id, obj.room_num, obj.bed, obj.lp_on, obj.getImgUrl()]
     }
     return JsonResponse(data)
+
+def single_client_view(request, caresID, *args, **kwargs):
+    this_client_cares_id = caresID
+    request.session['this_client_cares_id'] = this_client_cares_id
+    context = {"cares_id": this_client_cares_id}
+    return render(request, "pages/client_view.html", context, status=200)

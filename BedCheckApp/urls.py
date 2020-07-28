@@ -22,11 +22,13 @@ from bedcheck.views import roster_list_view
 from bedcheck.views import roster_view
 from bedcheck.views import login_view
 from bedcheck.views import single_client_data_view
+from bedcheck.views import single_client_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("login/", login_view),
     path("roster/", roster_view),
     path("rosterlist/", roster_list_view),
-    path("single_client_data/<int:caresID>", single_client_data_view),
+    path("this_client/<int:caresID>", single_client_view),
+    path("this_client_data/", single_client_data_view)
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

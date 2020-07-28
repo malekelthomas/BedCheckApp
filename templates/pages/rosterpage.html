@@ -67,7 +67,7 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/single_client_data/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td>"+clients[i].signature+"</td></tr>" /*to access Model attr remove '_'*/
+            var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/this_client/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td>"+clients[i].signature+"</td></tr>" /*to access Model attr remove '_'*/
             clientsList+=client;
         }
         clientElement.innerHTML = clientsList /* replace table body */
