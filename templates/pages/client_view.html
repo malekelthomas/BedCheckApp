@@ -1,24 +1,104 @@
-{% extends "base.html" %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block pageTitle %}Client{% endblock pageTitle %}
-{% block content %}
-<script>
-    const xhr = new XMLHttpRequest()
-    const method = 'GET'
-    const url = "/this_client_data/"
-    const responseType = "json"
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <style>
+        
+        .center{
+            display:block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            height: 50%;
+            width: 50%;
+            border: 7px solid #555;
+            border-radius: 15px;
+        }
+        .name-date{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            width: 25%;
+        }
+        #date{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+        #signaturebox {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 10px;
+            border: 5px solid #000;
+        }
+    </style>
+    <title>Client</title>
+  </head>
+  <body>
+      <div class="name-date">
+        <h1 id="client-name" class = "name"></h1>
+        <p id="date"></p>
+      </div>
+      <a id = "img"></a>
+      <canvas id="signaturebox" width="600" height = "200"></canvas>
 
-    xhr.responseType = responseType
-    xhr.open(method, url)
-    xhr.onload = function(){
-        const serverResponse = xhr.response
-        const client = serverResponse.response
-        console.log(client)
-    }
-    xhr.send()
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script>
+        n = new Date()
+        y = n.getFullYear();
+        m = n.getMonth() + 1;
+        d = n.getDate();
+        h = n.getHours()
+        min = n.getMinutes()
+        var hours;
+        if (h > 12){
+            hours = h - 12
+            h = hours
+        }
+        document.getElementById("date").innerHTML = m +"/" + d + "/" + y+ " "+h+":"+min;
+    </script>
+    <script>
+        const clientImg = document.getElementById("img")
+        const clientName = document.getElementById("client-name")
+        const xhr = new XMLHttpRequest()
+        const method = 'GET'
+        const url = "/this_client_data/"
+        const responseType = "json"
+    
+        xhr.responseType = responseType
+        xhr.open(method, url)
+        xhr.onload = function(){
+            const serverResponse = xhr.response
+            const client = serverResponse.response
+            console.log(client)
+            var img = "<img src= '"+client[7]+"' class ='center'>"
+            var name = client[2]+", "+client[1]
+            clientImg.innerHTML = img
+            clientName.innerHTML = name
+        }
+        xhr.send()
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+    <script>
+        var canvas = document.querySelector("canvas");
+        var signaturePad = new SignaturePad(canvas);
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>
 
 
 
-</script>
 
-{% endblock content %}
