@@ -65,7 +65,13 @@
             hours = h - 12
             h = hours
         }
-        document.getElementById("date").innerHTML = m +"/" + d + "/" + y+ " "+h+":"+min;
+        if (min <10){
+            document.getElementById("date").innerHTML = m +"/" + d + "/" + y+ " "+h+":0"+min;
+        }
+        else{
+            document.getElementById("date").innerHTML = m +"/" + d + "/" + y+ " "+h+":"+min;
+        }
+        
     </script>
     <script>
         const clientImg = document.getElementById("img")
