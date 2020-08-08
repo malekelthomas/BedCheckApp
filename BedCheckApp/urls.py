@@ -14,21 +14,26 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 from bedcheck.views import roster_list_view
 from bedcheck.views import roster_view
-from bedcheck.views import login_view
+from bedcheck.views import login_view, logout_view, home_view
 from bedcheck.views import single_client_data_view
 from bedcheck.views import single_client_view
 
+app_name = 'bedcheck  '
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("login/", login_view),
-    path("roster/", roster_view),
-    path("rosterlist/", roster_list_view),
-    path("this_client/<int:caresID>", single_client_view),
-    path("this_client_data/", single_client_data_view)
+    path('',home_view, name="home"),
+    path("login/", login_view, name="login"),
+    path('logout/', logout_view, name="logout"),
+    path("roster/", roster_view, name="roster"),
+    path("rosterlist/", roster_list_view, name="roster_data"),
+    path("this_client/<int:caresID>", single_client_view, name="client"),
+    path("this_client_data/", single_client_data_view, name="client_data")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

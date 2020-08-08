@@ -1,8 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from django.template import Context, loader
 from .models import Client
+from django.contrib.auth import authenticate, login, logout
 # Create your views here.
+
+def home_view(request, *args, **kwargs):
+	return render(request, "pages/home.html", context={}, status=200)
 
 def roster_view(request, *args, **kwargs):
     return render(request, "pages/rosterpage.html", context ={}, status=200)
@@ -22,8 +26,20 @@ def roster_list_view(request, *args, **kwargs):
     return JsonResponse(data)
 
 def login_view(request, *args, **kwargs):
-    return render(request, "pages/login.html", context ={}, status=200)
-
+    username = request.POST.get('username', False)
+    password = request.POST.get('password', False)
+    user = authenticate(request, username=username, password=password)
+    if user is not None:
+    	login(request,user)
+    	return redirect("bedcheck:home")
+    else:
+    	print("invalid user")
+    	return render(request, "pages/login.html", context={}, status=200)
+    	
+    	
+def logout_view(request, *args, **kwargs):
+	logout(request)
+	return redirect("bedcheck:home")
 
 def single_client_data_view(request, *args, **kwargs):
     this_client_cares_id = request.session.get('this_client_cares_id')
