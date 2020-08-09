@@ -23,17 +23,18 @@ from bedcheck.views import roster_list_view
 from bedcheck.views import roster_view
 from bedcheck.views import login_view, logout_view, home_view
 from bedcheck.views import single_client_data_view
-from bedcheck.views import single_client_view
+from bedcheck.views import single_client_view, register_view
 
-app_name = 'bedcheck  '
+app_name = 'bedcheck'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',home_view, name="home"),
+    path('',include(('bedcheck.urls','bedcheck'), namespace="home")),
+    path("register/", register_view, name="register"),
     path("login/", login_view, name="login"),
     path('logout/', logout_view, name="logout"),
-    path("roster/", roster_view, name="roster"),
+    path("roster/",include(('bedcheck.urls','bedcheck'), namespace="roster")),
     path("rosterlist/", roster_list_view, name="roster_data"),
-    path("this_client/<int:caresID>", single_client_view, name="client"),
+    path("this_client/<int:caresID>", include(('bedcheck.urls', 'bedcheck'), namespace="single-client")),
     path("this_client_data/", single_client_data_view, name="client_data")
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

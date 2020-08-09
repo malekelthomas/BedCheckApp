@@ -4,12 +4,12 @@
 <header>
     <h1>Login</h1>
   </header>
-  <form>
-    <input type="text" name="emailIn" value="Enter email">
-    <input type="text" name="passwordIn" value="Enter password">
-    <br>
+  <form method ="POST">
+    {% csrf_token %}
+    {{form.as_p}}
     <div class = "login">
       <input type="submit" value="Login">
     </div>
   </form>
+  Create an account<a href="/register" target="blank"><strong> here</strong></a>
 {% endblock content %}

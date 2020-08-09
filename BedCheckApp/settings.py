@@ -130,3 +130,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'BedCheckApp/media')
 
 AUTH_USER_MODEL = 'bedcheck.User'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

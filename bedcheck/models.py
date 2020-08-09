@@ -11,7 +11,7 @@ class Client(models.Model):
     room_num = models.IntegerField(blank=True, null=True)
     bed = models.CharField(blank=True, null=True, max_length =1)
     lp_on = models.TextField(blank=True, null=True)
-    signature = models.FileField(upload_to='signatures/', blank=True, default="")
+    signature = models.ImageField(upload_to='signatures/', blank=True, default="")
     image = models.ImageField(upload_to='images/', blank=True, default="")
 
     def getImgUrl(self):
@@ -20,6 +20,15 @@ class Client(models.Model):
             return img_url
         else:
             return ""
+
+    def getSigUrl(self):
+        if self.signature != None:
+            try:
+                sig_url = self.signature.url
+                return sig_url
+            except: #catches when there is no file
+                return ""
+
 
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None, commit=True):
@@ -35,6 +44,7 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         if commit:
+            user.is_active = False
             user.save(using=self._db)
         return user
 

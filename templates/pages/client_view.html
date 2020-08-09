@@ -26,6 +26,11 @@
             margin-top: 100px;
             width: 25%;
         }
+        .submitbttn{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
         #date{
             display: block;
             margin-left: auto;
@@ -43,14 +48,21 @@
     <title>Client</title>
   </head>
   <body>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
       <div class="name-date">
         <h1 id="client-name" class = "name"></h1>
         <p id="date"></p>
       </div>
       <a id = "img"></a>
-      <canvas id="signaturebox" width="600" height = "200"></canvas>
-
-
+    <form action ='{%url "bedcheck:single-client" cares_id %}' method='POST' enctype="multipart/form-data">{% csrf_token %}
+        {{form}}
+        <canvas id="signaturebox" width="600" height = "200"></canvas>
+        <input id="signature-submit" class="submitbttn" type="submit" value="Submit">
+    </form>
+    <script>
+        var canvas = document.querySelector("canvas");
+        var signaturePad = new SignaturePad(canvas);
+    </script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script>
@@ -95,11 +107,35 @@
         xhr.send()
     </script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
-    <script>
-        var canvas = document.querySelector("canvas");
-        var signaturePad = new SignaturePad(canvas);
-    </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        var a = "{{cares_id}}";
+    </script>
+    <script>
+
+        var submitButton = document.getElementById("signature-submit")
+        var data = signaturePad.toDataURL('image/png');
+        localStorage.setItem("signature", data);
+        var signature = localStorage.getItem("signature")
+        console.log(signature, data)
+        $(function(){
+            $('submitButton').click(function() {
+                $.ajax({
+                    type:"POST",
+                    url: "signatures/"+a,
+                    data: {
+                        imageBase64:signature
+                    },
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    async: false
+                }).done(function(){
+                    console.log("sent");
+                });
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </body>
