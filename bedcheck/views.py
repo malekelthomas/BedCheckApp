@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from time import sleep
 import base64
+import os
 # Create your views here.
 
 
@@ -65,7 +66,7 @@ def login_view(request, *args, **kwargs):
             if user is not None:
                 login(request,user)
                 messages.info(request, f"You are now logged in as {username}")
-                return redirect("bedcheck:home")
+                return redirect("/")
             else:
                 print("Unsuccessful")
                 messages.error(request, "Invalid username or password")
@@ -78,7 +79,7 @@ def login_view(request, *args, **kwargs):
     	
 def logout_view(request, *args, **kwargs):
 	logout(request)
-	return redirect("bedcheck:home")
+	return redirect("/")
 
 def single_client_data_view(request, *args, **kwargs):
     this_client_cares_id = request.session.get('this_client_cares_id')
@@ -99,11 +100,24 @@ def single_client_view(request, caresID, *args, **kwargs):
         if form.is_valid():
             client = form.save()
             signature = request.POST.get('signature', False)
-            print(signature.split(",")[1])
-            with open("sig.png","wb") as f:
-                str_as_bytes = str.encode(signature.split(",")[1])
-                f.write(base64.decodebytes(str_as_bytes))
-                f.close()
+            path_parent = os.path.dirname(os.getcwd())
+            this_client_signatures_path ="/signatures/"+str(caresID)
+            if not os.path.exists(this_client_signatures_path):
+            	os.makedirs(this_client_signatures_path)
+            	with open(this_client_signatures_path+"/sig.png","wb") as f:
+            	   str_as_bytes = str.encode(signature.split(",")[1])
+            	   f.write(base64.decodebytes(str_as_bytes))
+            	   f.close()
+            		
+            else:
+            	with open(this_client_signatures_path+"/sig.png","wb") as f:
+            	   str_as_bytes = str.encode(signature.split(",")[1])
+            	   f.write(base64.decodebytes(str_as_bytes))
+            	   f.close()
+            	   
+            client.signature = this_client_signatures_path+"/sig.png"
+            print(client.signature)
+            client.save()
             return redirect("/roster")
         else:
             for msg in form.error_messages:
