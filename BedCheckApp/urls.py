@@ -36,5 +36,5 @@ urlpatterns = [
     path("roster/",include(('bedcheck.urls','bedcheck'), namespace="roster")),
     path("rosterlist/", roster_list_view, name="roster_data"),
     path("this_client/<int:caresID>", include(('bedcheck.urls', 'bedcheck'), namespace="single-client")),
-    path("this_client_data/", single_client_data_view, name="client_data")
+    path("this_client_data/", single_client_data_view, name="client_data"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

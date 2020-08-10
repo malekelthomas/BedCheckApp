@@ -54,11 +54,15 @@
         <p id="date"></p>
       </div>
       <a id = "img"></a>
-    <form action ='{%url "bedcheck:single-client" cares_id %}' method='POST' enctype="multipart/form-data">{% csrf_token %}
-        {{form}}
-        <canvas id="signaturebox" width="600" height = "200"></canvas>
-        <input id="signature-submit" class="submitbttn" type="submit" value="Submit">
-    </form>
+    <div id ="signatureForm">
+        <form action ='{%url "bedcheck:single-client" cares_id %}' method='POST' enctype="multipart/form-data" id="sigForm">{% csrf_token %}
+            {{form}}
+            <canvas id="signaturebox" width="600" height = "200"></canvas>
+        </form>
+        <div class="submitbttn" id="submitbttn">
+            <input name="signature-submit" for="signature-submit" id="signature-submit" class="submitbttn" type="submit" value="Submit" onclick="submitButton();">
+        </div>
+    </div>
     <script>
         var canvas = document.querySelector("canvas");
         var signaturePad = new SignaturePad(canvas);
@@ -113,28 +117,32 @@
     </script>
     <script>
 
-        var submitButton = document.getElementById("signature-submit")
+        function submitButton()
+        {
+            var data = signaturePad.toDataURL();
+            console.log("Data: ",data);
+            $("#signature-submit").val(data);
+            $("#signatureForm > form").submit()
+        }
+        /* var submitButton = document.getElementById("signature-submit")
         var data = signaturePad.toDataURL('image/png');
-        localStorage.setItem("signature", data);
-        var signature = localStorage.getItem("signature")
-        console.log(signature, data)
+        console.log("Data:",data)
         $(function(){
-            $('submitButton').click(function() {
+            $('#submitButton').click(function() {
                 $.ajax({
                     type:"POST",
-                    url: "signatures/"+a,
-                    data: {
-                        imageBase64:signature
-                    },
+                    url: $("#sigForm").attr("action"),
+                    data: $("#sigForm").serialize(),
+                    data: data,
                     contentType: false,
                     cache: false,
-                    processData: false,
-                    async: false
+                    processData: true,
+                    async: true
                 }).done(function(){
                     console.log("sent");
                 });
             });
-        });
+        }); */
     </script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>

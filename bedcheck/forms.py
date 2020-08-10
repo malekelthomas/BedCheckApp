@@ -33,9 +33,7 @@ class ClientSignatureForm(ModelForm):
     def save(self, commit=True):
         client = super(ClientSignatureForm, self).save(commit=False)
         client.signature = self.cleaned_data['signature']
-        print(client.signature)
         if commit:
             client.save()
-            print(client)
         return client
 

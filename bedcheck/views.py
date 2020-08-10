@@ -94,9 +94,11 @@ def single_client_view(request, caresID, *args, **kwargs):
     context = {"cares_id": this_client_cares_id}
     if request.method == 'POST':
         form = ClientSignatureForm(request.POST, request.FILES, instance=this_client)
+        context["form"] = form
         if form.is_valid():
-            print(form)
-            client = form.save()
+            signature = request.POST.get('signature-submit', False)
+            print(signature)
+            sleep(10)
             #return redirect("/roster")
         else:
             for msg in form.error_messages:
