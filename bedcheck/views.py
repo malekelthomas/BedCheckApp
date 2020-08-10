@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from time import sleep
+import base64
 # Create your views here.
 
 
@@ -96,10 +97,14 @@ def single_client_view(request, caresID, *args, **kwargs):
         form = ClientSignatureForm(request.POST, request.FILES, instance=this_client)
         context["form"] = form
         if form.is_valid():
-            signature = request.POST.get('signature-submit', False)
-            print(signature)
-            sleep(10)
-            #return redirect("/roster")
+            client = form.save()
+            signature = request.POST.get('signature', False)
+            print(signature.split(",")[1])
+            with open("sig.png","wb") as f:
+                str_as_bytes = str.encode(signature.split(",")[1])
+                f.write(base64.decodebytes(str_as_bytes))
+                f.close()
+            return redirect("/roster")
         else:
             for msg in form.error_messages:
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
