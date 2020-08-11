@@ -6,7 +6,7 @@ from .forms import NewUserForm, ClientSignatureForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from time import sleep
+import datetime
 import base64
 import os
 from pathlib import Path
@@ -102,7 +102,7 @@ def single_client_view(request, caresID, *args, **kwargs):
             client = form.save()
             signature = request.POST.get('signature', False)
             path_parent = Path(os.getcwd())
-            this_client_signatures_path = path_parent/"BedCheckApp"/"media"/"signatures"/str(caresID)
+            this_client_signatures_path = path_parent/"BedCheckApp"/"media"/"signatures"/str(caresID)/str(datetime.date.today())
             if not os.path.exists(this_client_signatures_path):
                 print("creating path", this_client_signatures_path)
                 os.makedirs(this_client_signatures_path)
