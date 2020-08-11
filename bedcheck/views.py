@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from time import sleep
 import base64
 import os
+from pathlib import Path
 # Create your views here.
 
 
@@ -100,22 +101,23 @@ def single_client_view(request, caresID, *args, **kwargs):
         if form.is_valid():
             client = form.save()
             signature = request.POST.get('signature', False)
-            path_parent = os.path.dirname(os.getcwd())
-            this_client_signatures_path ="/signatures/"+str(caresID)
+            path_parent = Path(os.getcwd())
+            this_client_signatures_path = path_parent/"BedCheckApp"/"media"/"signatures"/str(caresID)
             if not os.path.exists(this_client_signatures_path):
-            	os.makedirs(this_client_signatures_path)
-            	with open(this_client_signatures_path+"/sig.png","wb") as f:
-            	   str_as_bytes = str.encode(signature.split(",")[1])
-            	   f.write(base64.decodebytes(str_as_bytes))
-            	   f.close()
-            		
+                print("creating path", this_client_signatures_path)
+                os.makedirs(this_client_signatures_path)
+                with open(this_client_signatures_path/"sig.png","wb") as f:
+                    str_as_bytes = str.encode(signature.split(",")[1])
+                    f.write(base64.decodebytes(str_as_bytes))
+                    f.close()
             else:
-            	with open(this_client_signatures_path+"/sig.png","wb") as f:
-            	   str_as_bytes = str.encode(signature.split(",")[1])
-            	   f.write(base64.decodebytes(str_as_bytes))
-            	   f.close()
+                print("saving file", this_client_signatures_path)
+                with open(this_client_signatures_path/"sig.png","wb") as f:
+                    str_as_bytes = str.encode(signature.split(",")[1])
+                    f.write(base64.decodebytes(str_as_bytes))
+                    f.close()
             	   
-            client.signature = this_client_signatures_path+"/sig.png"
+            client.signature = str(this_client_signatures_path/"sig.png")
             print(client.signature)
             client.save()
             return redirect("/roster")
