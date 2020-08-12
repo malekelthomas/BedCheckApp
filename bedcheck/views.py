@@ -6,6 +6,7 @@ from .forms import NewUserForm, ClientSignatureForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.conf import settings
 import datetime
 import base64
 import os
@@ -101,8 +102,8 @@ def single_client_view(request, caresID, *args, **kwargs):
         if form.is_valid():
             client = form.save()
             signature = request.POST.get('signature', False)
-            path_parent = Path(os.getcwd())
-            this_client_signatures_path = path_parent/"BedCheckApp"/"media"/"signatures"/str(caresID)/str(datetime.date.today())
+            path_parent = Path(settings.MEDIA_ROOT)
+            this_client_signatures_path = path_parent/"signatures"/str(caresID)/str(datetime.date.today())
             if not os.path.exists(this_client_signatures_path):
                 print("creating path", this_client_signatures_path)
                 os.makedirs(this_client_signatures_path)
@@ -111,13 +112,13 @@ def single_client_view(request, caresID, *args, **kwargs):
                     f.write(base64.decodebytes(str_as_bytes))
                     f.close()
             else:
-                print("saving file", this_client_signatures_path)
+                print("saving file", this_client_signatures_path, "\n")
                 with open(this_client_signatures_path/"sig.png","wb") as f:
                     str_as_bytes = str.encode(signature.split(",")[1])
                     f.write(base64.decodebytes(str_as_bytes))
                     f.close()
             	   
-            client.signature = str(this_client_signatures_path/"sig.png")
+            client.signature = str(this_client_signatures_path)[str(this_client_signatures_path).index("media/")+len("media/"):]+"/sig.png"
             print(client.signature)
             client.save()
             return redirect("/roster")
