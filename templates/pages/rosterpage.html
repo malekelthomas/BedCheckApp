@@ -25,6 +25,7 @@
 {% block pageTitle %}Roster{% endblock pageTitle %}
 {% block content %}
 
+{% if user.is_authenticated %}
 <div class = "table-responsive">
 	<table class="table" id="clientList">
         {% load staticfiles%}
@@ -44,6 +45,10 @@
 		</tbody>
     </table>
 </div>
+{% else %}
+<p> Please login to view this page</p>
+{% endif %}
+
 
 
 

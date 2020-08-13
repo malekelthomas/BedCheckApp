@@ -15,6 +15,11 @@
       <li class="nav-item">
         <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Intake</a>
       </li>
+      {% if not user.is_authenticated %}
+      <li class ="nav-item active">
+      	<a class="nav-link" href="/login">Login</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
 </nav>
