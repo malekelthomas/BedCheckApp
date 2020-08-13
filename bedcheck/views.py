@@ -11,6 +11,7 @@ import datetime
 import base64
 import os
 from pathlib import Path
+import re
 # Create your views here.
 
 
@@ -91,11 +92,33 @@ def single_client_data_view(request, *args, **kwargs):
     }
     return JsonResponse(data)
 
+def bedcheck_time():
+    time = str(datetime.datetime.now().strftime("%I:%M %p"))
+    split_time = re.split(":| ",time)
+    if split_time[2] == "AM":
+        if split_time[0] == 12 and split_time[1] <= 45:
+            return True
+        elif split_time[0] == 2 and split_time[1] <= 30:
+            return True
+        else:
+            return False
+    elif split_time[2] == "PM":
+        if split_time[0] == 9:
+            if split_time[1] >= 55:
+                return True
+        elif split_time[0] == 10:
+            if split_time[1] <= 45:
+                return True
+        else:
+            return False
+
+
 def single_client_view(request, caresID, *args, **kwargs):
     this_client_cares_id = caresID
     this_client = Client.objects.get(cares_id=caresID)
     request.session['this_client_cares_id'] = this_client_cares_id
-    context = {"cares_id": this_client_cares_id}
+    context = {"cares_id": this_client_cares_id, "bedcheck_time": bedcheck_time(), "time_now": str(datetime.datetime.now().strftime("%I:%M %p"))}
+    print(context["time_now"])
     if request.method == 'POST':
         form = ClientSignatureForm(request.POST, request.FILES, instance=this_client)
         context["form"] = form
@@ -103,7 +126,7 @@ def single_client_view(request, caresID, *args, **kwargs):
             client = form.save()
             signature = request.POST.get('signature', False)
             path_parent = Path(settings.MEDIA_ROOT)
-            this_client_signatures_path = path_parent/"signatures"/str(caresID)/str(datetime.date.today())
+            this_client_signatures_path = path_parent/"signatures"/str(caresID)/str(datetime.date.today()) 
             if not os.path.exists(this_client_signatures_path):
                 print("creating path", this_client_signatures_path)
                 os.makedirs(this_client_signatures_path)
@@ -118,7 +141,7 @@ def single_client_view(request, caresID, *args, **kwargs):
                     f.write(base64.decodebytes(str_as_bytes))
                     f.close()
             	   
-            client.signature = str(this_client_signatures_path)[str(this_client_signatures_path).index("media/")+len("media/"):]+"/sig.png"
+            client.signature = str(this_client_signatures_path)[str(this_client_signatures_path).index("media\\")+len("media\\"):]+"\sig.png" #have to handle slashes on different platforms
             print(client.signature)
             client.save()
             return redirect("/roster")
@@ -129,3 +152,9 @@ def single_client_view(request, caresID, *args, **kwargs):
 
     form = ClientSignatureForm
     return render(request, "pages/client_view.html", context, status=200)
+
+
+
+
+        
+        

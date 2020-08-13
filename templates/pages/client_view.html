@@ -19,6 +19,12 @@
             border: 7px solid #555;
             border-radius: 15px;
         }
+        .not-time{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
         .name-date{
             display: block;
             margin-left: auto;
@@ -31,6 +37,7 @@
             margin-left: auto;
             margin-right: auto;
         }
+        
         #date{
             display: block;
             margin-left: auto;
@@ -54,6 +61,8 @@
         <p id="date"></p>
       </div>
       <a id = "img"></a>
+
+    {% if bedcheck_time %}
     <div id ="signatureForm">
         <form action ='{%url "bedcheck:single-client" cares_id %}' method='POST' enctype="multipart/form-data" id="sigForm">{% csrf_token %}
             {{form}}
@@ -62,6 +71,9 @@
         </form>
         <button class ="submitbttn" onclick="submitButton();">Submit</button>
     </div>
+    {%else%}
+    <p class="not-time">It is currently {{time_now}}, it is not yet time for the bedcheck. Please check again later or sign in as supervisor</p>
+    {% endif %}
     <script>
         var canvas = document.querySelector("canvas");
         var signaturePad = new SignaturePad(canvas);
