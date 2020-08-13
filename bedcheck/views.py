@@ -117,7 +117,8 @@ def single_client_view(request, caresID, *args, **kwargs):
     this_client_cares_id = caresID
     this_client = Client.objects.get(cares_id=caresID)
     request.session['this_client_cares_id'] = this_client_cares_id
-    context = {"cares_id": this_client_cares_id, "bedcheck_time": bedcheck_time(), "time_now": str(datetime.datetime.now().strftime("%I:%M %p"))}
+    context = {"user_is_supervisor":request.user.is_supervisor, "cares_id": this_client_cares_id, "bedcheck_time": bedcheck_time(), "time_now": str(datetime.datetime.now().strftime("%I:%M %p"))}
+    print(context["user_is_supervisor"])
     print(context["time_now"])
     if request.method == 'POST':
         form = ClientSignatureForm(request.POST, request.FILES, instance=this_client)

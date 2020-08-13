@@ -62,7 +62,20 @@
       </div>
       <a id = "img"></a>
 
-    {% if bedcheck_time %}
+    {% if not bedcheck_time %}
+      {% if user_is_supervisor %}
+        <div id ="signatureForm">
+            <form action ='{%url "bedcheck:single-client" cares_id %}' method='POST' enctype="multipart/form-data" id="sigForm">{% csrf_token %}
+                {{form}}
+                <canvas id="signaturebox" width="600" height = "200"></canvas>
+                <input name="signature" for="signature" id="signature" class="submitbttn" type="hidden" value="sig">
+            </form>
+            <button class ="submitbttn" onclick="submitButton();">Submit</button>
+        </div>
+        {%else%}
+        <p class="not-time">It is currently {{time_now}}, it is not yet time for the bed check. Please check again later or sign in as supervisor.</p>
+        {%endif%}
+    {%elif bedcheck_time%}
     <div id ="signatureForm">
         <form action ='{%url "bedcheck:single-client" cares_id %}' method='POST' enctype="multipart/form-data" id="sigForm">{% csrf_token %}
             {{form}}
@@ -71,8 +84,6 @@
         </form>
         <button class ="submitbttn" onclick="submitButton();">Submit</button>
     </div>
-    {%else%}
-    <p class="not-time">It is currently {{time_now}}, it is not yet time for the bedcheck. Please check again later or sign in as supervisor</p>
     {% endif %}
     <script>
         var canvas = document.querySelector("canvas");
