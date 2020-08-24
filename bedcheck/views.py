@@ -118,14 +118,14 @@ def single_client_view(request, caresID, *args, **kwargs):
     this_client = Client.objects.get(cares_id=caresID)
     request.session['this_client_cares_id'] = this_client_cares_id
     context = {"user_is_supervisor":request.user.is_supervisor, "cares_id": this_client_cares_id, "bedcheck_time": bedcheck_time(), "time_now": str(datetime.datetime.now().strftime("%I:%M %p"))}
-    print(context["user_is_supervisor"])
-    print(context["time_now"])
     if request.method == 'POST':
         form = ClientSignatureForm(request.POST, request.FILES, instance=this_client)
         context["form"] = form
         if form.is_valid():
             client = form.save()
             signature = request.POST.get('signature', False)
+            time_submitted = request.POST.get('date', False)
+            print(time_submitted)
             path_parent = Path(settings.MEDIA_ROOT)
             this_client_signatures_path = path_parent/"signatures"/str(caresID)/str(datetime.date.today()) 
             if not os.path.exists(this_client_signatures_path):

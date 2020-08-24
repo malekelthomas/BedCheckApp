@@ -69,6 +69,7 @@
                 {{form}}
                 <canvas id="signaturebox" width="600" height = "200"></canvas>
                 <input name="signature" for="signature" id="signature" class="submitbttn" type="hidden" value="sig">
+                <input name="date" id="dateVar" type="hidden" value="">
             </form>
             <button class ="submitbttn" onclick="submitButton();">Submit</button>
         </div>
@@ -81,6 +82,7 @@
             {{form}}
             <canvas id="signaturebox" width="600" height = "200"></canvas>
             <input name="signature" for="signature" id="signature" class="submitbttn" type="hidden" value="sig">
+            <input name="date" id="dateVar" type="hidden" value="">
         </form>
         <button class ="submitbttn" onclick="submitButton();">Submit</button>
     </div>
@@ -98,16 +100,25 @@
         d = n.getDate();
         h = n.getHours()
         min = n.getMinutes()
+        amorpm = ""
         var hours;
-        if (h > 12){
-            hours = h - 12
+        if (h >=12){
+            if (h > 12){
+                hours = h - 12
+            }
             h = hours
+            amorpm = "PM"
+        }
+        else if(h < 12){
+            amorpm = "AM"
         }
         if (min <10){
             document.getElementById("date").innerHTML = m +"/" + d + "/" + y+ " "+h+":0"+min;
+            document.getElementById("dateVar").value = m +"/" + d + "/" + y+ " "+h+":0"+min+" "+amorpm;
         }
         else{
             document.getElementById("date").innerHTML = m +"/" + d + "/" + y+ " "+h+":"+min;
+            document.getElementById("dateVar").value = m +"/" + d + "/" + y+ " "+h+":"+min+" "+amorpm;
         }
         
     </script>
