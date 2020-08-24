@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+import datetime
+import re
+from django.conf import settings
 # Create your models here.
 
 class Client(models.Model):
@@ -23,11 +26,13 @@ class Client(models.Model):
 
     def getSigUrl(self):
         if self.signature != None:
-            try:
+            pattern = str(datetime.date.today())
+            if re.search(rf"{pattern}", str(self.signature)): #load file from today's date
                 sig_url = self.signature.url
                 return sig_url
-            except: #catches when there is no file
-                return ""
+        else:
+            return ""
+
 
 
 class UserManager(BaseUserManager):
