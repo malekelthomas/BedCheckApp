@@ -32,6 +32,11 @@
             margin-top: 100px;
             width: 25%;
         }
+        .table{
+        	display:block;
+        	margin-right: auto;
+        	width: 50%;
+         }
         .submitbttn{
             display: block;
             margin-left: auto;
@@ -61,6 +66,20 @@
         <p id="date"></p>
       </div>
       <a id = "img"></a>
+      <table class ="table" id="LpOn">
+      	<thead>
+      		<tr>
+      			<th>LP/ON</th>
+      		</tr>
+      	</thead>
+      	{%if user_is_supervisor%}
+      	<tbody contenteditable ='true' id ="Lp-On">
+      	{%else%}
+      	<tbody id="Lp-On">
+      	{%endif%}
+      	</tbody>
+      </table>
+      	
 
     {% if not bedcheck_time %}
       {% if user_is_supervisor %}
@@ -112,6 +131,7 @@
         
     </script>
     <script>
+    	const pass = document.getElementById("Lp-On")
         const clientImg = document.getElementById("img")
         const clientName = document.getElementById("client-name")
         const xhr = new XMLHttpRequest()
@@ -127,8 +147,10 @@
             console.log(client)
             var img = "<img src= '"+client[7]+"' class ='center'>"
             var name = client[2]+", "+client[1]
+            var latepass = client[6]
             clientImg.innerHTML = img
             clientName.innerHTML = name
+            pass.innerHTML = latepass
         }
         xhr.send()
     </script>
