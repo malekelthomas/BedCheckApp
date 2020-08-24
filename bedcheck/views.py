@@ -94,7 +94,7 @@ def single_client_data_view(request, *args, **kwargs):
 
 def bedcheck_time():
     time = str(datetime.datetime.now().strftime("%I:%M %p"))
-    split_time = re.split(":| ",time)
+    split_time = re.split(":| ",time) #splits time string by : and " "
     if split_time[2] == "AM":
         if split_time[0] == 12 and split_time[1] <= 45:
             return True
