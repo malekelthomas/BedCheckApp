@@ -23,7 +23,7 @@ from bedcheck.views import roster_list_view
 from bedcheck.views import roster_view
 from bedcheck.views import login_view, logout_view, home_view
 from bedcheck.views import single_client_data_view
-from bedcheck.views import single_client_view, register_view
+from bedcheck.views import single_client_view, register_view, client_delete_view
 
 app_name = 'bedcheck'
 
@@ -37,4 +37,5 @@ urlpatterns = [
     path("rosterlist/", roster_list_view, name="roster_data"),
     path("this_client/<int:caresID>", include(('bedcheck.urls', 'bedcheck'), namespace="single-client")),
     path("this_client_data/", single_client_data_view, name="client_data"),
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

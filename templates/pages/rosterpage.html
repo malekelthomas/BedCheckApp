@@ -55,7 +55,9 @@
 
 
 
-
+<script type="text/javascript">
+        var time_signed = "{{time_client_signed}}";
+</script>
 <script>
     const clientElement = document.getElementById("client") /*table body*/
     const xhr = new XMLHttpRequest()
@@ -76,7 +78,13 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/this_client/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td><img src="+"'"+clients[i].signature+"'alt='Has not signed'/></td></tr>" /*to access Model attr remove '_'*/
+            var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/this_client/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td><img src="+"'"+clients[i].signature+"'alt='Has not signed'/></td>" /*to access Model attr remove '_'*/
+            if (time_signed){
+            	client+="<td>"+time_signed+"</td></tr>";
+            }
+            else {
+            	client+="</tr>"
+            }
             
             clientsList+=client;
         }

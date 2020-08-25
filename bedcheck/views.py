@@ -26,7 +26,8 @@ def profile_view(request, *args, **kwargs):
     pass
 
 def roster_view(request, *args, **kwargs):
-    return render(request, "pages/rosterpage.html", context ={}, status=200)
+    time_client_signed = request.session.get('time_submitted')
+    return render(request, "pages/rosterpage.html", context ={"time_client_signed": time_client_signed}, status=200)
 
 
 def roster_list_view(request, *args, **kwargs):
@@ -125,9 +126,11 @@ def single_client_view(request, caresID, *args, **kwargs):
             client = form.save()
             signature = request.POST.get('signature', False)
             time_submitted = request.POST.get('date', False)
+            request.session['time_submitted'] = time_submitted
             print(time_submitted)
             path_parent = Path(settings.MEDIA_ROOT)
             this_client_signatures_path = path_parent/"signatures"/str(caresID)/str(datetime.date.today()) 
+            this_client_signatures_log_path = path_parent/"signatures"/str(caresID)/"log"
             if not os.path.exists(this_client_signatures_path):
                 print("creating path", this_client_signatures_path)
                 os.makedirs(this_client_signatures_path)
@@ -141,6 +144,20 @@ def single_client_view(request, caresID, *args, **kwargs):
                     str_as_bytes = str.encode(signature.split(",")[1])
                     f.write(base64.decodebytes(str_as_bytes))
                     f.close()
+                    
+            if not os.path.exists(this_client_signatures_log_path):
+            	   print("creating path",this_client_signatures_log_path)
+            	   os.makedirs(this_client_signatures_log_path)
+            	   with open(this_client_signatures_log_path/"log.txt", "a") as f:
+            	   	f.write("Last time signed: "+time_submitted+"\n")
+            	   	f.close()
+            else:
+            	   	print("updating log")
+            	   	with open(this_client_signatures_log_path/"log.txt", "a") as f:
+            	   		f.write("Last time signed: "+time_submitted+"\n")
+            	   		f.close()
+            	   	
+            	   	
             	   
             client.signature = str(this_client_signatures_path)[str(this_client_signatures_path).index("media/")+len("media/"):]+"/sig.png" #have to handle slashes on different platforms
             print(client.signature)
@@ -155,6 +172,10 @@ def single_client_view(request, caresID, *args, **kwargs):
     return render(request, "pages/client_view.html", context, status=200)
 
 
+def client_delete_view(request, caresID, *args, **kwargs):
+	client = Client.objects.get(cares_id=caresID)
+	client.delete()
+	return  redirect("/roster")
 
 
         

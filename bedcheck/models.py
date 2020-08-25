@@ -1,3 +1,4 @@
+#pylint:disable=E0001
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
@@ -34,7 +35,11 @@ class Client(models.Model):
             return ""
 
 
-
+class Room(Client):
+	room_number = models.TextField(blank=True, null=True)
+	bed_a = models.ForeignKey(Client, related_name='%(class)s_client_a ', on_delete= models.CASCADE)
+	bed_b = models.ForeignKey(Client, related_name='%(class)s_client_b', on_delete= models.CASCADE)
+	
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None, commit=True):
         """Creates and saves a User with supplied parameters"""
