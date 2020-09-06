@@ -33,15 +33,46 @@ class Client(models.Model):
                 return sig_url
         else:
             return ""
+            
+    def __str__(self):
+    	return "{} {}".format(self.first_name, self.last_name)
 
 
 class Room(models.Model):
 	room_number = models.TextField(blank=True, null=True)
-	bed_a = models.ForeignKey(Client, related_name='%(app_label)s_%(class)s_bed_a ', on_delete=models.CASCADE)
-	bed_b = models.ForeignKey(Client, related_name='%(app_label)s_%(class)s_bed_b', on_delete=models.CASCADE)
+	bed_a = models.OneToOneField( 'Client', blank=True,null=True, unique=True,related_name='%(app_label)s_%(class)s_bed_a', on_delete=models.CASCADE)
+	bed_b = models.OneToOneField('Client', blank=True, null=True, unique=True,  related_name='%(app_label)s_%(class)s_bed_b', on_delete=models.CASCADE)
 	
-	class Meta:
-		abstract = True
+	def find_client_room(self, bed):
+		if bed == None:
+			return False
+		if Room.objects.filter(bed_a=bed).exists():
+			for i in Room.objects.filter(bed_a=bed):
+				return i
+		elif Room.objects.filter(bed_b=bed).exists():
+			for i in Room.objects.filter(bed_b=bed):
+				return i
+		else:
+			return False
+	
+	def save(self, *args, **kwargs):
+		if not self.find_client_room(self.bed_a) and not self.find_client_room(self.bed_b):
+			if self.bed_a == None:
+				super(Room, self).save(*args,**kwargs)
+			super(Room, self).save(*args,**kwargs)
+		else:
+			if self.room_number != self.find_client_room(self.bed_a) and self.bed_a:
+				return "{} is already in {}".format(self.bed_a, self.find_client_room(self.bed_a))
+			if self.room_number != self.find_client_room(self.bed_b) and self.bed_b :
+				return "{} is already in {}".format(self.bed_b, self.find_client_room(self.bed_b))
+			else:
+				super(Room,self).save(*args,**kwargs)
+			
+		
+	
+	
+	def __str__(self):
+		return "{}".format(self.room_number)
 		
 class UserManager(BaseUserManager):
     def create_user(self, email, first_name, last_name, password=None, commit=True):
@@ -107,3 +138,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         "Does user have permision to view the app 'app_label'?"
         return True
+          

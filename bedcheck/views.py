@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from django.template import Context, loader
-from .models import Client
+from .models import Client, Room
 from .forms import NewUserForm, ClientSignatureForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
