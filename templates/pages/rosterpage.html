@@ -28,7 +28,7 @@
 {% if user.is_authenticated %}
 <div class = "table-responsive">
 	<table class="table" id="clientList">
-        {% load staticfiles%}
+        {% load static%}
 		<thead>
 			<tr>
 				<th>Room</th>
@@ -49,6 +49,7 @@
 		</tbody>
     </table>
 </div>
+<a href ="/report_builder"><button>Submit Roster for Report</button></a>
 {% else %}
 <p> Please login to view this page</p>
 {% endif %}
@@ -79,7 +80,7 @@
             imageurl = clients[i].image.url
             console.log(imageurl)
             var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/this_client/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td><img src="+"'"+clients[i].signature+"'alt='Has not signed'/></td>" /*to access Model attr remove '_'*/
-            if (time_signed){
+            if (time_signed ){
             	client+="<td>"+time_signed+"</td></tr>";
             }
             else {
