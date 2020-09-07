@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'bedcheck',
+    'report_builder',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'BedCheckApp/media')
 AUTH_USER_MODEL = 'bedcheck.User'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+#Rest Framwework
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
