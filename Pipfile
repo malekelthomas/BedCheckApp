@@ -10,6 +10,7 @@ djangorestframework = "*"
 django-filter = "*"
 markdown = "*"
 django-allauth = "*"
+django-report-tools = "*"
 
 [requires]
 python_version = "3.8"
