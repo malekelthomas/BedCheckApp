@@ -7,10 +7,10 @@ verify_ssl = true
 
 [packages]
 djangorestframework = "*"
-django-report-builder = "*"
 django-filter = "*"
 markdown = "*"
 django-allauth = "*"
+django-report-builder = {editable = true, path = "/data/data/com.termux/files/home/storage/shared/Dev/BC/djangoReportFork/django-report-builder"}
 
 [requires]
 python_version = "3.8"

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "623b9c6440c28aa2fb78f62a87aaabdb4a1800170b7dbdfabfd506ff9196dfeb"
+            "sha256": "52f2c89ff4183699ae84056eea18af9317373bb84d08564fbb200a84691e9d91"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -70,12 +70,8 @@
             "version": "==2.3.0"
         },
         "django-report-builder": {
-            "hashes": [
-                "sha256:4461deed70598fc2cde2776ff98fafb1558cb05a9b93239488acb304844ac261",
-                "sha256:caf4d1f0bc1158723948da0196ca44e215c45bc57c6d4f53ec635548e3ae79cb"
-            ],
-            "index": "pypi",
-            "version": "==6.3.2"
+            "editable": true,
+            "path": "/data/data/com.termux/files/home/storage/shared/Dev/BC/djangoReportFork/django-report-builder"
         },
         "djangorestframework": {
             "hashes": [
