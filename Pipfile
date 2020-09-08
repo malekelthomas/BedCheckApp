@@ -10,7 +10,6 @@ djangorestframework = "*"
 django-filter = "*"
 markdown = "*"
 django-allauth = "*"
-django-report-builder = {editable = true, git = "https://github.com/malekelthomas/django-report-builder.git"}
 
 [requires]
 python_version = "3.8"
