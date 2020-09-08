@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "623b9c6440c28aa2fb78f62a87aaabdb4a1800170b7dbdfabfd506ff9196dfeb"
+            "sha256": "fa2ba957c755db9f84a672c09800848a68301e56e84b4f8e28f0294f18deaf27"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -70,12 +70,9 @@
             "version": "==2.3.0"
         },
         "django-report-builder": {
-            "hashes": [
-                "sha256:4461deed70598fc2cde2776ff98fafb1558cb05a9b93239488acb304844ac261",
-                "sha256:caf4d1f0bc1158723948da0196ca44e215c45bc57c6d4f53ec635548e3ae79cb"
-            ],
-            "index": "pypi",
-            "version": "==6.3.2"
+            "editable": true,
+            "git": "https://github.com/malekelthomas/django-report-builder.git",
+            "ref": "0cc8b750173647a672a87a032e4405ed99621bf9"
         },
         "djangorestframework": {
             "hashes": [
