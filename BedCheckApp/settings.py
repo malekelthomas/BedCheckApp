@@ -27,7 +27,7 @@ SECRET_KEY = 'rn19a#g2v*3$nluq4(k(#73fh(ako%$co@bzz(8bw+re$5leyn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["roster-intake-manager.herokuapp.com"]
 
 
 # Application definition
