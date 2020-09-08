@@ -99,7 +99,7 @@ class UserManager(BaseUserManager):
 
         user = self.create_user(email,password=password, first_name=first_name, last_name=last_name, commit=False,)
         user.is_staff = True
-        user.is_superuser = False
+        user.is_superuser = True
         user.is_supervisor = False
         user.save(using=self._db)
         return user 
@@ -110,11 +110,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('First Name'), max_length=30, blank=True)
     last_name = models.CharField(_('Last Name'), max_length=150, blank=True)
 
-    is_active = models.BooleanField(_('Active'), default=False, help_text=_('Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'),)
+    is_active = models.BooleanField(_('Active'), default=True, help_text=_('Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'),)
     
     is_supervisor = models.BooleanField(_('Supervisor Status'), default=False, help_text=_('Designates whether user has supervisor status.'),)
 
-    is_staff = models.BooleanField(_('Staff Status'), default=False, help_text=('Designates whether the user can log into this admin site.'),)
+    is_staff = models.BooleanField(_('Staff Status'), default=True, help_text=('Designates whether the user can log into this admin site.'),)
 
     date_joined = models.DateTimeField(_('Date Joined'), default=timezone.now,)
     #is_superuser, groups, and user_permissions supplied by PermissionsMixin
