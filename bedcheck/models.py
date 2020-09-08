@@ -110,7 +110,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('First Name'), max_length=30, blank=True)
     last_name = models.CharField(_('Last Name'), max_length=150, blank=True)
 
-    is_active = models.BooleanField(_('Active'), default=True, help_text=_('Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'),)
+    is_active = models.BooleanField(_('Active'), default=False, help_text=_('Designates whether this user should be treated as active. Unselect this instead of deleting accounts.'),)
     
     is_supervisor = models.BooleanField(_('Supervisor Status'), default=False, help_text=_('Designates whether user has supervisor status.'),)
 
