@@ -12,6 +12,7 @@ djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
 django-allauth = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
