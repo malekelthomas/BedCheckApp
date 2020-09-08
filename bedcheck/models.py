@@ -99,7 +99,7 @@ class UserManager(BaseUserManager):
 
         user = self.create_user(email,password=password, first_name=first_name, last_name=last_name, commit=False,)
         user.is_staff = True
-        user.is_superuser = True
+        user.is_superuser = False
         user.is_supervisor = False
         user.save(using=self._db)
         return user 
