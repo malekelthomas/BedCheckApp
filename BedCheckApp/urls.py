@@ -38,7 +38,6 @@ urlpatterns = [
     path("rosterlist/", roster_list_view, name="roster_data"),
     path("this_client/<int:caresID>", include(('bedcheck.urls', 'bedcheck'), namespace="single-client")),
     path("this_client_data/", single_client_data_view, name="client_data"),
-    path('report_builder/', include('report_builder.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
