@@ -19,6 +19,7 @@ psycopg2-binary = "*"
 python-decouple = "*"
 python-dotenv = "*"
 whitenoise = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"
