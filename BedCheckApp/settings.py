@@ -13,12 +13,14 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from decouple import config
 import dj_database_url
+import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #where manage.py is
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATIC_DIR=os.path.join(BASE_DIR,"static")
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+dotenv_file= os.path.join(BASE_DIR,".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -48,12 +50,14 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'BedCheckApp.urls'
@@ -82,13 +86,12 @@ WSGI_APPLICATION = 'BedCheckApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
+DATABASES = {}
     #'default': {
 #        'ENGINE': 'django.db.backends.sqlite3',
 #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #    }
-	'default':dj_database_url.config(default=config('DATABASE_URL'))
-}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600) #database url fom heroku/.env
 
 
 # Password validation
@@ -127,6 +130,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_DIR=os.path.join(BASE_DIR,"static")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATIC_URL = '/static/'
 '''STATICFILES_DIRS=(
     STATIC_DIR,
@@ -138,6 +144,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'BedCheckApp/media')
 AUTH_USER_MODEL = 'bedcheck.User'
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 #Rest Framwework
 

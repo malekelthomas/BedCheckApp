@@ -13,6 +13,12 @@ markdown = "*"
 django-filter = "*"
 django-allauth = "*"
 gunicorn = "*"
+dj-database-url = "*"
+psycopg2 = "*"
+psycopg2-binary = "*"
+python-decouple = "*"
+python-dotenv = "*"
+whitenoise = "*"
 
 [requires]
 python_version = "3.8"
