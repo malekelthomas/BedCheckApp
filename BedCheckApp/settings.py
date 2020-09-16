@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import django_heroku
 from decouple import config
 import dj_database_url
 import dotenv
@@ -156,3 +157,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+#Activate Django-Heroku
+django_heroku.settings(locals())
+del DATABASES['default']['OPTIONS']['sslmode']
