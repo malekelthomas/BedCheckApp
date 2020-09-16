@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 
     'bedcheck',
     'rest_framework',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +162,10 @@ REST_FRAMEWORK = {
 #Activate Django-Heroku
 django_heroku.settings(locals())
 del DATABASES['default']['OPTIONS']['sslmode']
+
+#AWS
+AWS_ACCESS_KEY_ID=config('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY =config('AWS_ACCESS_KEY_ID')
+AWS_STORAGE_BUCKET_NAME=config('AWS_STORAGE_BUCKET_NAME')
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
