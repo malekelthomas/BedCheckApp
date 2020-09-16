@@ -1,0 +1,13 @@
+.env
+db.sqlite3
+.vscode/settings.json
+bedcheck/__pycache__/__init__.cpython-38.pyc
+bedcheck/__pycache__/admin.cpython-38.pyc
+bedcheck/__pycache__/forms.cpython-38.pyc
+bedcheck/__pycache__/models.cpython-38.pyc
+bedcheck/__pycache__/urls.cpython-38.pyc
+bedcheck/__pycache__/views.cpython-38.pyc
+BedCheckApp/__pycache__/settings.cpython-38.pyc
+BedCheckApp/__pycache__/__init__.cpython-38.pyc
+BedCheckApp/__pycache__/urls.cpython-38.pyc
+BedCheckApp/media/signatures/

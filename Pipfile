@@ -1,4 +1,4 @@
-[[source]]
+ [[source]]
 name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
@@ -13,6 +13,16 @@ markdown = "*"
 django-filter = "*"
 django-allauth = "*"
 gunicorn = "*"
+dj-database-url = "*"
+psycopg2 = "*"
+psycopg2-binary = "*"
+python-decouple = "*"
+python-dotenv = "*"
+whitenoise = "*"
+pillow = "*"
+django-heroku = "*"
+django-storages = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.8"
