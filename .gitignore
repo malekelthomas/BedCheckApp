@@ -7,10 +7,6 @@ bedcheck/__pycache__/forms.cpython-38.pyc
 bedcheck/__pycache__/models.cpython-38.pyc
 bedcheck/__pycache__/urls.cpython-38.pyc
 bedcheck/__pycache__/views.cpython-38.pyc
-bedcheck/migrations/__init__.py
-bedcheck/migrations/0001_initial.py
-bedcheck/migrations/0002_user_is_supervisor.py
-bedcheck/migrations/0003_room.py
 BedCheckApp/__pycache__/settings.cpython-38.pyc
 BedCheckApp/__pycache__/__init__.cpython-38.pyc
 BedCheckApp/__pycache__/urls.cpython-38.pyc
