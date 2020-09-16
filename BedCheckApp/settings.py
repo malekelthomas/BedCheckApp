@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 #where manage.py is
@@ -22,12 +24,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'rn19a#g2v*3$nluq4(k(#73fh(ako%$co@bzz(8bw+re$5leyn'
-
+#SECRET_KEY = 'rn19a#g2v*3$nluq4(k(#73fh(ako%$co@bzz(8bw+re$5leyn'
+SECRET_KEY =config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["roster-intake-manager.herokuapp.com"]
+ALLOWED_HOSTS = ["roster-intake-manager.herokuapp.com", "localhost"]
 
 
 # Application definition
@@ -81,10 +83,11 @@ WSGI_APPLICATION = 'BedCheckApp.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    #'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
+	'default':dj_database_url.config(default=config('DATABASE_URL'))
 }
 
 
