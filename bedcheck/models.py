@@ -15,18 +15,18 @@ class Client(models.Model):
     room_num = models.IntegerField(blank=True, null=True)
     bed = models.CharField(blank=True, null=True, max_length =1)
     lp_on = models.TextField(blank=True, null=True)
-    signature = models.ImageField(upload_to='signatures/', blank=True, default="")
-    image = models.ImageField(upload_to='images/', blank=True, default="")
+    signature = models.ImageField(upload_to='signatures/', blank=True, default="", null=True)
+    image = models.ImageField(upload_to='images/', blank=True, default="", null=True)
 
     def getImgUrl(self):
-        if self.image != None:
+        if self.image != "":
             img_url = self.image.url
             return img_url
         else:
             return ""
 
     def getSigUrl(self):
-        if self.signature != None:
+        if self.signature != "":
             pattern = str(datetime.date.today())
             if re.search(rf"{pattern}", str(self.signature)): #load file from today's date
                 sig_url = self.signature.url
