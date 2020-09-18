@@ -17,6 +17,7 @@ class Client(models.Model):
     lp_on = models.TextField(blank=True, null=True)
     signature = models.ImageField(upload_to='signatures/', blank=True, default="", null=True)
     image = models.ImageField(upload_to='images/', blank=True, default="", null=True)
+    last_signature_time = models.TextField(blank=True,null=True)
 
     def getImgUrl(self):
         if self.image != "":
@@ -39,7 +40,7 @@ class Client(models.Model):
 
 
 class Room(models.Model):
-	room_number = models.TextField(blank=True, null=True)
+	room_number = models.IntegerField(blank=True, null=True)
 	bed_a = models.OneToOneField( 'Client', blank=True,null=True, unique=True,related_name='%(app_label)s_%(class)s_bed_a', on_delete=models.CASCADE)
 	bed_b = models.OneToOneField('Client', blank=True, null=True, unique=True,  related_name='%(app_label)s_%(class)s_bed_b', on_delete=models.CASCADE)
 	
