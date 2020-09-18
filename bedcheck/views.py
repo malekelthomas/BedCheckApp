@@ -30,7 +30,8 @@ def profile_view(request, *args, **kwargs):
 
 def roster_view(request, *args, **kwargs):
     time_client_signed = request.session.get('time_submitted')
-    return render(request, "pages/rosterpage.html", context ={"time_client_signed": time_client_signed}, status=200)
+    this_client_cares_id = request.session.get('this_client_cares_id')
+    return render(request, "pages/rosterpage.html", context ={"time_client_signed": time_client_signed, "client":this_client_cares_id}, status=200)
 
 
 def roster_list_view(request, *args, **kwargs):
@@ -40,7 +41,7 @@ def roster_list_view(request, *args, **kwargs):
     returns json data
     """
     qs = Client.objects.all()
-    client_list = [{"id": x.id, "firstname": x.first_name, "lastname": x.last_name, "caresID": x.cares_id, "roomNumber": x.room_num, "bed": x.bed, "lpOn": x.lp_on, "image": x.getImgUrl(), "signature": x.getSigUrl()} for x in qs]
+    client_list = [{"id": x.id, "firstname": x.first_name, "lastname": x.last_name, "caresID": x.cares_id, "roomNumber": x.room_num, "bed": x.bed, "lpOn": x.lp_on, "image": x.getImgUrl(), "signature": x.getSigUrl(), "last_time_signed": x.last_signature_time} for x in qs]
     data = {
         "response": client_list
     }
@@ -157,8 +158,10 @@ def single_client_view(request, caresID, *args, **kwargs):
             	   	
             	   	
             	   
-            client.signature = this_client_signatures_path+"/sig.png" 
+            client.signature = this_client_signatures_path+"/sig.png"
+            client.last_signature_time = time_submitted
             print(client.signature)
+            print(client.last_signature_time)
             client.save()
             return redirect("/roster")
         else:
