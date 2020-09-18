@@ -12,6 +12,9 @@ import base64
 import os
 from pathlib import Path
 import re
+import logging
+import boto3
+from botocore.exceptions import ClientError
 # Create your views here.
 
 
@@ -113,7 +116,6 @@ def bedcheck_time():
         else:
             return False
 
-
 def single_client_view(request, caresID, *args, **kwargs):
     this_client_cares_id = caresID
     this_client = Client.objects.get(cares_id=caresID)
@@ -128,38 +130,34 @@ def single_client_view(request, caresID, *args, **kwargs):
             time_submitted = request.POST.get('date', False)
             request.session['time_submitted'] = time_submitted
             print(time_submitted)
-            path_parent = Path(settings.MEDIA_ROOT)
-            this_client_signatures_path = path_parent/"signatures"/str(caresID)/str(datetime.date.today()) 
-            this_client_signatures_log_path = path_parent/"signatures"/str(caresID)/"log"
+            #path_parent = settings.S3_URL
+            this_client_signatures_path = "signatures/"+str(caresID)+"/"+str(datetime.date.today()) 
+            this_client_signatures_log_path = "signatures/"+str(caresID)+"/log"
+            s3= boto3.client('s3')
             if not os.path.exists(this_client_signatures_path):
                 print("creating path", this_client_signatures_path)
                 os.makedirs(this_client_signatures_path)
-                with open(this_client_signatures_path/"sig.png","wb") as f:
-                    str_as_bytes = str.encode(signature.split(",")[1])
-                    f.write(base64.decodebytes(str_as_bytes))
-                    f.close()
+                str_as_bytes = str.encode(signature.split(",")[1])
+                s3.put_object(Body=base64.decodebytes(str_as_bytes), Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=this_client_signatures_path+"/sig.png")                    
             else:
                 print("saving file", this_client_signatures_path, "\n")
-                with open(this_client_signatures_path/"sig.png","wb") as f:
-                    str_as_bytes = str.encode(signature.split(",")[1])
-                    f.write(base64.decodebytes(str_as_bytes))
-                    f.close()
-                    
+                str_as_bytes = str.encode(signature.split(",")[1])
+                s3.put_object(Body=base64.decodebytes(str_as_bytes), Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=this_client_signatures_path+"/sig.png")                                
             if not os.path.exists(this_client_signatures_log_path):
             	   print("creating path",this_client_signatures_log_path)
             	   os.makedirs(this_client_signatures_log_path)
-            	   with open(this_client_signatures_log_path/"log.txt", "a") as f:
+            	   with open(this_client_signatures_log_path+"/log.txt", "a") as f:
             	   	f.write("Last time signed: "+time_submitted+"\n")
             	   	f.close()
             else:
             	   	print("updating log")
-            	   	with open(this_client_signatures_log_path/"log.txt", "a") as f:
+            	   	with open(this_client_signatures_log_path+"/log.txt", "a") as f:
             	   		f.write("Last time signed: "+time_submitted+"\n")
             	   		f.close()
             	   	
             	   	
             	   
-            client.signature = str(this_client_signatures_path)[str(this_client_signatures_path).index("media/")+len("media/"):]+"/sig.png" #have to handle slashes on different platforms
+            client.signature = this_client_signatures_path+"/sig.png" 
             print(client.signature)
             client.save()
             return redirect("/roster")
