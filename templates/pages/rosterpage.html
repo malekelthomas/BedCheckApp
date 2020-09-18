@@ -102,27 +102,19 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/this_client/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td class='signature'><img src="+"'"+clients[i].signature+"'alt='Has not signed'/></td>" /*to access Model attr remove '_'*/
-            var client_sign_time = check_time(clients[i].last_time_signed)
-            if (client_sign_time == 10){
-            	client+="<td>"+time_signed+"</td></tr>";
-            }
-            else if (client_sign_time == 12){
-                client+="<td></td><td>"+time_signed+"</td></tr>"
-            }
-            else if (client_sign_time == 2){
-                client+="<td></td><td></td><td>"+time_signed+"</td></tr>"
-            }
-            else if (client_sign_time == 3){
-                client+="<td></td><td></td><td></td><td>"+time_signed+"</td></tr>"
-            }
-            else {
-            	client+="</tr>"
-            }
+            var client = `<tr class='${clients[i].caresID}'><td>${clients[i].roomNumber}</td><td>${clients[i].bed}</td><td><a href ='/this_client/${clients[i].caresID}'><img src='${clients[i].image}' alt='Man'/><a/></td><td>${clients[i].lastname}</td><td>${clients[i].firstname}</td><td>${clients[i].caresID}</td><td>${clients[i].lpOn}</td><td class='signature'><img src='${clients[i].signature}'alt='Has not signed'/></td><td id='${clients[i].caresID}_10'></td><td id='${clients[i].caresID}_12'></td><td id='${clients[i].caresID}_2'></td><td id='${clients[i].caresID}_3'></td>` /*to access Model attr remove '_'*/
+            
             
             clientsList+=client;
         }
+
         clientElement.innerHTML = clientsList /* replace table body */
+
+        for(i=0;i<clients.length;i++){
+            var id = check_time(clients[i].last_time_signed)
+            console.log(`#${clients[i].caresID}_${id}`)
+            $(`#${clients[i].caresID}_${id}`).html(clients[i].last_time_signed)
+        }
         console.log(clients)
     }
     xhr.send() /*triggers request */
