@@ -132,13 +132,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_DIR=os.path.join(BASE_DIR,"static")
-STATIC_ROOT = "/static/"
+USE_S3 = os.getenv('USE_S3') == 'FALSE'
+STATIC_DIR=os.path.join(BASE_DIR,"BedCheckApp/static")
+if USE_S3:
+    STATIC_ROOT = "/static/"
 
 #STATIC_URL = '/static/'
-'''STATICFILES_DIRS=(
+STATICFILES_DIRS=[
     STATIC_DIR,
-)'''
+]
 
 
 MEDIA_ROOT = '/media/'
@@ -160,7 +162,7 @@ REST_FRAMEWORK = {
 }
 
 #Activate Django-Heroku
-django_heroku.settings(locals())
+django_heroku.settings(locals(), staticfiles=False)
 del DATABASES['default']['OPTIONS']['sslmode']
 
 #AWS
