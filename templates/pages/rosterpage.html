@@ -58,6 +58,29 @@
 
 <script type="text/javascript">
         var time_signed = "{{time_client_signed}}";
+        var client_just_signed = "{{client}}"
+        console.log(client_just_signed)
+
+        function check_time(time){
+            //takes in time string formatted like mm/dd/yy h:m am/pm
+            hour = time.slice(1)[0]
+            am_or_pm = time.slice(1)[1]
+
+            if (hour < 12 && hour >= 10 && am_or_pm =='PM'){
+                return 10;
+            }
+            else if(hour == 12 || hour < 2 && am_or_pm =='AM'){
+                return 12;
+            }
+            else if(hour <= 3 && hour >= 2 && am_or_pm =='AM'){
+                return 2;
+            }
+            else{
+                return 3;
+            }
+        }
+
+        //function che
 </script>
 <script>
     const clientElement = document.getElementById("client") /*table body*/
@@ -79,9 +102,19 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/this_client/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td><img src="+"'"+clients[i].signature+"'alt='Has not signed'/></td>" /*to access Model attr remove '_'*/
-            if (time_signed ){
+            var client = "<tr class='"+clients[i].caresID+"'><td>"+clients[i].roomNumber+"</td><td>"+clients[i].bed+"</td><td><a href ='/this_client/"+clients[i].caresID+"'><img src="+"'"+clients[i].image+"' alt='Man'/><a/></td><td>"+clients[i].lastname+"</td><td>"+clients[i].firstname+"</td><td>"+clients[i].caresID+"</td><td>"+clients[i].lpOn+"</td><td class='signature'><img src="+"'"+clients[i].signature+"'alt='Has not signed'/></td>" /*to access Model attr remove '_'*/
+            var client_sign_time = check_time(clients[i].last_time_signed)
+            if (client_sign_time == 10){
             	client+="<td>"+time_signed+"</td></tr>";
+            }
+            else if (client_sign_time == 12){
+                client+="<td></td><td>"+time_signed+"</td></tr>"
+            }
+            else if (client_sign_time == 2){
+                client+="<td></td><td></td><td>"+time_signed+"</td></tr>"
+            }
+            else if (client_sign_time == 3){
+                client+="<td></td><td></td><td></td><td>"+time_signed+"</td></tr>"
             }
             else {
             	client+="</tr>"
