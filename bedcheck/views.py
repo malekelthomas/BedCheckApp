@@ -15,6 +15,8 @@ import re
 import logging
 import boto3
 from botocore.exceptions import ClientError
+from django.db.models import Q
+
 # Create your views here.
 
 
@@ -31,7 +33,7 @@ def profile_view(request, *args, **kwargs):
 def roster_view(request, *args, **kwargs):
     time_client_signed = request.session.get('time_submitted')
     this_client_cares_id = request.session.get('this_client_cares_id')
-    return render(request, "pages/rosterpage.html", context ={"time_client_signed": time_client_signed, "client":this_client_cares_id}, status=200)
+    return render(request, "pages/rosterpage.html", context ={"time_client_signed": time_client_signed, "client":this_client_cares_id, "user_is_supervisor":request.user.is_supervisor}, status=200)
 
 
 def roster_list_view(request, *args, **kwargs):
@@ -46,6 +48,15 @@ def roster_list_view(request, *args, **kwargs):
         "response": client_list
     }
     return JsonResponse(data)
+
+def report_view(request, *args, **kwargs):
+    time = str(datetime.datetime.now().strftime("%#m/%d/%Y"))
+    num_lp = Client.objects.filter(Q(lp_on="1") & ~Q(last_signature_time__contains= time)).count()
+    num_on = Client.objects.filter(Q(lp_on="2") & ~Q(last_signature_time__contains= time)).count()
+    num_total = Client.objects.filter(Q(lp_on="1") | Q(lp_on="2") & Q(last_signature_time__contains= time)).count()
+    num_missing = Client.objects.filter(~Q(lp_on="1") & ~Q(lp_on="2") & ~Q(last_signature_time__contains= time)).count()
+    context = {"user_is_supervisor":request.user.is_supervisor, "num_lp": num_lp, "num_on": num_on, 'num_missing':num_missing, "num_total":num_total}
+    return render(request, "pages/report.html", context, status=200)
 
 def register_view(request, *args, **kwargs):
     if request.method == 'POST':
