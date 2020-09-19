@@ -114,16 +114,9 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var lp_on;
-            if(clients[i].lpOn == null){
-                lp_on = "";
-            }
-            else{
-                lp_on = (clients[i].lpOn == 1 ? "L/P" : "O/N");
-            }
             var bed = clients[i].bed.toUpperCase()
         
-            var client = `<tr class='${clients[i].caresID}'><td>${clients[i].roomNumber}</td><td>${bed}</td><td><a href ='/this_client/${clients[i].caresID}'><img src='${clients[i].image}' alt='Man'/><a/></td><td>${clients[i].lastname}</td><td>${clients[i].firstname}</td><td>${clients[i].caresID}</td><td>${lp_on}</td><td class='signature'><img src='${clients[i].signature}'alt='Has not signed'/></td><td id='${clients[i].caresID}_10'></td><td id='${clients[i].caresID}_12'></td><td id='${clients[i].caresID}_2'></td><td id='${clients[i].caresID}_3'></td>` /*to access Model attr remove '_'*/
+            var client = `<tr class='${clients[i].caresID}'><td>${clients[i].roomNumber}</td><td>${clients[i].bed}</td><td><a href ='/this_client/${clients[i].caresID}'><img src='${clients[i].image}' alt='Man'/><a/></td><td>${clients[i].lastname}</td><td>${clients[i].firstname}</td><td>${clients[i].caresID}</td><td>${clients[i].lpOn}</td><td class='signature'><img src='${clients[i].signature}'alt='Has not signed'/></td><td id='${clients[i].caresID}_10'></td><td id='${clients[i].caresID}_12'></td><td id='${clients[i].caresID}_2'></td><td id='${clients[i].caresID}_3'></td>` /*to access Model attr remove '_'*/
             
             
             clientsList+=client;
