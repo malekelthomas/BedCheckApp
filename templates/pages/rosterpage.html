@@ -75,16 +75,18 @@
 
         function check_time(time){
             //takes in time string formatted like mm/dd/yy h:m am/pm
-            hour = time.slice(1)[0]
-            am_or_pm = time.slice(1)[1]
+            hour = String(time.split(" ").slice(1)[0]).charAt(0)
+            am_or_pm =String(time.split(" ").slice(1)[1])
+            
 
+            console.log(hour)
             if (hour < 12 && hour >= 10 && am_or_pm =='PM'){
                 return 10;
             }
             else if(hour == 12 || hour < 2 && am_or_pm =='AM'){
                 return 12;
             }
-            else if(hour <= 3 && hour >= 2 && am_or_pm =='AM'){
+            else if(hour < 3 && hour >= 2 && am_or_pm =='AM'){
                 return 2;
             }
             else{
