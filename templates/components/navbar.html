@@ -10,14 +10,20 @@
         <a class="nav-link" href="/roster">Roster <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/logout">Logout</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Intake</a>
       </li>
+      {% if user.is_supervisor %}
+      <li class ="nav-item active">
+      	<a class="nav-link" href="/report">Report</a>
+      </li>
+      {% endif %}
       {% if not user.is_authenticated %}
       <li class ="nav-item active">
       	<a class="nav-link" href="/login">Login</a>
+      </li>
+      {%else%}
+      <li class="nav-item active">
+        <a class="nav-link" href="/logout">Logout</a>
       </li>
       {% endif %}
     </ul>
