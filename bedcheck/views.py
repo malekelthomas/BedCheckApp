@@ -53,7 +53,7 @@ def report_view(request, *args, **kwargs):
     time = str(datetime.datetime.now().strftime("%#m/%d/%Y"))
     num_lp = Client.objects.filter(Q(lp_on="L/P") & ~Q(last_signature_time__contains= time)).count()
     num_on = Client.objects.filter(Q(lp_on="O/N") & ~Q(last_signature_time__contains= time)).count()
-    num_total = Client.objects.filter(Q(lp_on="L/P") | Q(lp_on="O/N") & Q(last_signature_time__contains= time)).count()
+    num_total = Client.objects.filter(Q(lp_on="L/P") | Q(lp_on="O/N") | Q(last_signature_time__contains= time)).count()
     num_missing = Client.objects.filter(~Q(lp_on="L/P") & ~Q(lp_on="O/N") & ~Q(last_signature_time__contains= time)).count()
     context = {"user_is_supervisor":request.user.is_supervisor, "num_lp": num_lp, "num_on": num_on, 'num_missing':num_missing, "num_total":num_total}
     return render(request, "pages/report.html", context, status=200)
