@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+
+
+{% block css %}
+    .charts div{
+        margin:auto;
+    }
+
+{% endblock css%}
+
+
+
+
+
+
+{% block content %}
+
+
+<div class="charts">
+    <div style="height: 300px; width: 300px;">
+        <canvas id="totalsChart"></canvas>
+    </div>
+    <div style="height: 300px; width: 300px;">
+        <canvas id="passChart"></canvas>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+<script>
+    const clientElement = document.getElementById("client") /*table body*/
+    const xhr = new XMLHttpRequest()
+    const method = 'GET' //http get method
+    const url = "/rosterlist/" /*trailing slash important!!*/
+    const responseType = "json"
+    var l
+    xhr.responseType = responseType
+    xhr.open(method, url) /* open request with specified method at url */
+    xhr.onload = function(){ /*upon loading execute this function */
+        const serverResponse = xhr.response
+        const clients = serverResponse.response
+        var clientsList = "";
+        var i;
+        for(i=0;i<clients.length;i++){
+            console.log(clients[i].lpOn)
+        }
+    }
+    xhr.send() /*triggers request */
+
+</script>
+<script>
+    Chart.defaults.global.plugins.datalabels.anchor = 'end';
+    Chart.defaults.global.plugins.datalabels.align = 'end';
+    
+    var ctx = document.getElementById('passChart').getContext('2d');
+    var lp = "{{num_lp}}";
+    var on = "{{num_on}}"
+    var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+    labels: ['LP', 'ON'],
+    datasets: [{
+    label: 'Pass Holders',
+    backgroundColor: ['rgb(65, 130, 240)','rgb(246, 63, 7)','rgb(65, 130, 240)'],
+    borderColor: ['rgb(255, 99, 132)','rgb(255, 99, 132)'],
+    data: [lp, on]
+    }]
+    },
+
+    // Configuration options go here
+    options: {
+        legend: {display:false},
+        title:{
+            display:true,
+            text:"Pass Holders"
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }]
+        },
+        responsive: true,
+        maintainAspectRatio: false
+        
+        }   
+    });
+
+
+    var ctx = document.getElementById('totalsChart').getContext('2d');
+    var total_present= "{{num_total}}";
+    var missing = "{{num_missing}}"
+    var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+    labels: ['Num Clients Present', 'Num Clients Missing'],
+    datasets: [{
+    label: 'Clients',
+    backgroundColor: ['rgb(65, 130, 240)','rgb(246, 63, 7)',],
+    borderColor: ['rgb(255, 99, 132)','rgb(255, 99, 132)'],
+    data: [total_present, missing]
+    }]
+    },
+
+    // Configuration options go here
+    options: {
+        legend: {display:false},
+        title:{
+            display:true,
+            text:'Clients'
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }]
+        },
+        responsive: true,
+        maintainAspectRatio: false
+        
+        }   
+    });
+</script>
+{%endblock content %}
