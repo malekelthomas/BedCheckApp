@@ -18,8 +18,7 @@ from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
 from bedcheck.models import User
-
-
+from bedcheck.views import report_view
 from bedcheck.views import roster_list_view
 from bedcheck.views import roster_view
 from bedcheck.views import login_view, logout_view, home_view
@@ -39,5 +38,6 @@ urlpatterns = [
     path("this_client/<int:caresID>", include(('bedcheck.urls', 'bedcheck'), namespace="single-client")),
     path("this_client_data/", single_client_data_view, name="client_data"),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('report/', report_view)
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
