@@ -42,7 +42,7 @@ def roster_list_view(request, *args, **kwargs):
     Consumed by JS or Java/Swift/Android/iOS
     returns json data
     """
-    qs = Client.objects.all()
+    qs = Client.objects.all().order_by("room_num")
     client_list = [{"id": x.id, "firstname": x.first_name, "lastname": x.last_name, "caresID": x.cares_id, "roomNumber": x.room_num, "bed": x.bed, "lpOn": x.lp_on, "image": x.getImgUrl(), "signature": x.getSigUrl(), "last_time_signed": x.last_signature_time} for x in qs]
     data = {
         "response": client_list
