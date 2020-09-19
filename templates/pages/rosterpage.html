@@ -19,6 +19,13 @@
         display:block;
     }
 
+    #reportButton {
+        text-align:center;
+        button{
+            margin:auto;
+        }
+    }
+
 {% endblock css%}
 
 
@@ -26,32 +33,37 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<div class = "table-responsive">
-	<table class="table" id="clientList">
-        {% load static%}
-		<thead>
-			<tr>
-				<th>Room</th>
-				<th>Bed</th>
-				<th>Photo</th>
-				<th>Last Name</th>
-				<th>First Name</th>
-				<th>Cares ID</th>
-				<th>LP/ON</th>
-                <th>Sign</th>
-                <th>10pm</th>
-                <th>12am</th>
-                <th>2am</th>
-                <th>3am-8pm</th>
-			</tr>
-		</thead>
-		<tbody id="client">
-		</tbody>
-    </table>
-</div>
-<!-- <a href ="#""><button>Submit Roster for Report</button></a> -->
+    <div class = "table-responsive">
+        <table class="table" id="clientList">
+            {% load static%}
+            <thead>
+                <tr>
+                    <th>Room</th>
+                    <th>Bed</th>
+                    <th>Photo</th>
+                    <th>Last Name</th>
+                    <th>First Name</th>
+                    <th>Cares ID</th>
+                    <th>LP/ON</th>
+                    <th>Sign</th>
+                    <th>10pm</th>
+                    <th>12am</th>
+                    <th>2am</th>
+                    <th>3am-8pm</th>
+                </tr>
+            </thead>
+            <tbody id="client">
+            </tbody>
+        </table>
+    </div>
+    {% if user_is_supervisor %}
+    <div id="reportButton">    
+        <a href ="/report"><button>Submit Roster for Report</button></a>
+    </div>
+    {% endif %}
+
 {% else %}
-<p> Please login to view this page</p>
+    <p> Please login to view this page</p>
 {% endif %}
 
 
@@ -102,7 +114,16 @@
             console.log(clients[i])
             imageurl = clients[i].image.url
             console.log(imageurl)
-            var client = `<tr class='${clients[i].caresID}'><td>${clients[i].roomNumber}</td><td>${clients[i].bed}</td><td><a href ='/this_client/${clients[i].caresID}'><img src='${clients[i].image}' alt='Man'/><a/></td><td>${clients[i].lastname}</td><td>${clients[i].firstname}</td><td>${clients[i].caresID}</td><td>${clients[i].lpOn}</td><td class='signature'><img src='${clients[i].signature}'alt='Has not signed'/></td><td id='${clients[i].caresID}_10'></td><td id='${clients[i].caresID}_12'></td><td id='${clients[i].caresID}_2'></td><td id='${clients[i].caresID}_3'></td>` /*to access Model attr remove '_'*/
+            var lp_on;
+            if(clients[i].lpOn == null){
+                lp_on = "";
+            }
+            else{
+                lp_on = (clients[i].lpOn == 1 ? "L/P" : "O/N");
+            }
+            var bed = clients[i].bed.toUpperCase()
+        
+            var client = `<tr class='${clients[i].caresID}'><td>${clients[i].roomNumber}</td><td>${bed}</td><td><a href ='/this_client/${clients[i].caresID}'><img src='${clients[i].image}' alt='Man'/><a/></td><td>${clients[i].lastname}</td><td>${clients[i].firstname}</td><td>${clients[i].caresID}</td><td>${lp_on}</td><td class='signature'><img src='${clients[i].signature}'alt='Has not signed'/></td><td id='${clients[i].caresID}_10'></td><td id='${clients[i].caresID}_12'></td><td id='${clients[i].caresID}_2'></td><td id='${clients[i].caresID}_3'></td>` /*to access Model attr remove '_'*/
             
             
             clientsList+=client;
