@@ -51,7 +51,11 @@ def roster_list_view(request, *args, **kwargs):
     data = {
         "response": client_list
     }
-    return JsonResponse(data)
+    if request.user.is_authenticated:
+    	return JsonResponse(data)
+    else:
+    	return render(request, "pages/notauth.html", status=200)
+    
 
 def report_view(request, *args, **kwargs):
     time = str(datetime.datetime.now().strftime("%#m/%d/%Y"))
