@@ -5,6 +5,7 @@ from .models import Client, Room
 from .forms import NewUserForm, ClientSignatureForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.conf import settings
 import datetime
@@ -31,9 +32,12 @@ def profile_view(request, *args, **kwargs):
     pass
 
 def roster_view(request, *args, **kwargs):
-    time_client_signed = request.session.get('time_submitted')
-    this_client_cares_id = request.session.get('this_client_cares_id')
-    return render(request, "pages/rosterpage.html", context ={"time_client_signed": time_client_signed, "client":this_client_cares_id, "user_is_supervisor":request.user.is_supervisor}, status=200)
+    if request.user.is_authenticated:
+    	time_client_signed = request.session.get('time_submitted')
+    	this_client_cares_id = request.session.get('this_client_cares_id')
+    	return render(request, "pages/rosterpage.html", context ={"time_client_signed": time_client_signed, "client":this_client_cares_id, "user_is_supervisor":request.user.is_supervisor}, status=200)
+    else:
+    		return render(request, 'pages/rosterpage.html')
 
 
 def roster_list_view(request, *args, **kwargs):
