@@ -4,7 +4,7 @@ chardet==3.0.4
 defusedxml==0.6.0
 Django==3.1.1
 django-allauth==0.42.0
-django-filter==2.3.0
+django-filter==2.4.0
 django-report-tools==0.2.2
 djangorestframework==3.11.1
 et-xmlfile==1.0.1
